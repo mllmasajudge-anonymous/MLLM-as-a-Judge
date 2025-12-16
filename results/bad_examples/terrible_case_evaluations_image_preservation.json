@@ -1,0 +1,206 @@
+[
+  {
+    "image_id": "Plausibility_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 3,
+        "justification": "Edited Image shows black hollow gaps at both shoulder joints and seam artifacts near torso-shoulder area; Ground Truth preserves continuous shoulder and torso detail."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Extended arms with black voids disrupt stylistic unity and color coherence around the upper back; background desert remains similar but visual unity is broken."
+      },
+      "identity_preservation": {
+        "score": 2,
+        "justification": "Arm identities degraded: both arms show detached forearms and black interior stumps at shoulder sockets, while hair, shirt, and legs remain recognizable as in Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Seamlessness_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 3,
+        "justification": "Edited Image shows thick black outline around both arms and hands extending onto surrounding desert, while Ground Truth maintains clean background edges."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Black cartoon outline on arms breaks photorealistic style and visual unity compared to Ground Truth's consistent photographic texture and color harmony."
+      },
+      "identity_preservation": {
+        "score": 3,
+        "justification": "Edited Image alters arm and hand shape with thick outlines and simplified fingers; head, hair, torso remain similar to Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Alignment_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 3,
+        "justification": "Edited Image shows increased foreground shrubs and warmer saturation, plus tighter bottom crop; desert foreground and horizon differ noticeably from Ground Truth."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Edited Image uses warmer, higher-saturation orange tones and a tighter central crop, disrupting the muted palette and panoramic composition present in Ground Truth."
+      },
+      "identity_preservation": {
+        "score": 4,
+        "justification": "Back-of-head hair and shirt color remain similar, but torso silhouette and arm placement differ from Ground Truth, reducing pose-based identity consistency."
+      }
+    }
+  },
+  {
+    "image_id": "Texture_and_Detail_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image replaces the real boy with a cartoon figure, altering the entire foreground subject and sharp figure boundary, though desert background remains similar."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Cartoon figure's flat colors and thick black outlines clash with the photorealistic desert, disrupting stylistic unity and overall color coherence compared to Ground Truth."
+      },
+      "identity_preservation": {
+        "score": 1,
+        "justification": "Real boy's facial features, hair texture, clothing folds, and proportions are replaced by a simplified cartoon face, losing all original identity-defining details."
+      }
+    }
+  },
+  {
+    "image_id": "Global_Consistency_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image repaints entire landscape with saturated orange tones and visible brushstrokes—sky, mesas, and shrubs altered beyond Ground Truth's preserved photographic textures."
+      },
+      "global_consistency": {
+        "score": 6,
+        "justification": "Painted edit maintains cohesive painterly style, unified warm color palette, and original composition of foreground boy and distant mesas comparable to Ground Truth."
+      },
+      "identity_preservation": {
+        "score": 5,
+        "justification": "Boy's silhouette, hair shape, posture, and landmark mesas remain recognizable; facial detail and clothing texture are simplified compared to Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Color_and_Lighting_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image alters non-target areas: desert dunes, shrubs, and ground show increased saturation and color shifts compared to Ground Truth's natural tones."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Stylistic unity broken: subject shows neon rainbow mapping while background retains natural warm desert palette; composition preserved but color coherence worsened."
+      },
+      "identity_preservation": {
+        "score": 4,
+        "justification": "Subject silhouette, hair, and clothing shape remain, but extreme rainbow coloring on torso, arms, and shoes alters visual identity compared to Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Spatial_Relationship_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 4,
+        "justification": "Edited image shows increased color/contrast in distant mesas and a different lower-right shrub shape versus Ground Truth, indicating modest background changes."
+      },
+      "global_consistency": {
+        "score": 5,
+        "justification": "Overall composition and viewpoint are preserved, but Edited image uses a warmer, higher-contrast desert palette compared to Ground Truth's paler tones."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "Boy's hair shape, shirt folds, shorts, and body proportions match Ground Truth; only hand positions are altered, preserving the subject's identity."
+      }
+    }
+  },
+  {
+    "image_id": "Unchanged_Regions_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image replaces the desert background with underwater coral and seafloor, altering non-target landscape and horizon that Ground Truth preserves."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Edited Image introduces a uniform blue underwater palette and marine elements, disrupting Ground Truth's warm desert color harmony and original compositional atmosphere."
+      },
+      "identity_preservation": {
+        "score": 5,
+        "justification": "Edited Image retains the boy's hair, shirt, shorts, and body proportions; hands extended match Ground Truth though skin tone has a blue cast."
+      }
+    }
+  },
+  {
+    "image_id": "Completeness_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 4,
+        "justification": "Edited Image shows warmer color shift and increased texture contrast in foreground rocks and bottom-right bush, unlike Ground Truth's smoother tones and preservation."
+      },
+      "global_consistency": {
+        "score": 5,
+        "justification": "Distant buttes and composition match well, but Edited Image applies stronger warm grading and higher contrast, slightly reducing color-palette coherence versus Ground Truth."
+      },
+      "identity_preservation": {
+        "score": 3,
+        "justification": "Subject identity partly degraded: Edited Image has only left arm fully extended while Ground Truth shows both arms raised; hair, shirt, and proportions remain similar."
+      }
+    }
+  },
+  {
+    "image_id": "Image_Quality_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image shows heavy blur and grain across background buttes and foreground shrubs; boy's outline and rock textures are noticeably degraded versus Ground Truth."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Edited Image applies a stronger orange/red color cast and pronounced film grain; composition remains centered but overall stylistic unity is worse than Ground Truth."
+      },
+      "identity_preservation": {
+        "score": 2,
+        "justification": "Edited Image loses identity cues: right wrist watch and shirt folds disappear, hair silhouette and shoe details are blurred compared to Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Scale_Realism_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Edited Image removes/flattens the foreground rock ledge and nearby shrubs at bottom center; Ground Truth preserves detailed foreground texture and rocks."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Color palette remains similar, but composition is disrupted: foreground cliff removed and subject moved to lower center, unlike Ground Truth layout."
+      },
+      "identity_preservation": {
+        "score": 2,
+        "justification": "Edited Image reduces the boy to a small silhouette at lower center, losing facial, hair, and shirt details clearly visible in Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Identity_Preservation_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 3,
+        "justification": "Edited Image smooths foreground sand and shrubs (lower-right bush) and alters color tones near left rocks; Ground Truth preserves fine sand texture and shrub details."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Edited Image's mannequin introduces uniform, synthetic material on central figure, disrupting photographic texture and color cohesion; layout preserved but stylistic unity is worse."
+      },
+      "identity_preservation": {
+        "score": 1,
+        "justification": "Edited Image replaces boy (center) with a faceless, featureless mannequin—losing hair, shirt, facial features, and wristwatch details that Ground Truth preserves."
+      }
+    }
+  }
+]

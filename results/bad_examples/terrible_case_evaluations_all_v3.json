@@ -1,0 +1,638 @@
+[
+  {
+    "image_id": "Plausibility_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 4,
+        "justification": "Background landscape and clothing remain mostly intact; noticeable black gaps at both shoulders are unintended."
+      },
+      "global_consistency": {
+        "score": 4,
+        "justification": "Overall desert colors, perspective, and clothing preserved, but arm cutout artifacts disrupt visual consistency."
+      },
+      "identity_preservation": {
+        "score": 5,
+        "justification": "Boy remains recognizable from hair, clothing, and posture despite arm detachment."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Stretched arms retain realistic proportions relative to the torso and surrounding scene."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Arms appear disconnected with large voids at shoulder joints, breaking anatomical spatial relationships."
+      },
+      "texture_and_detail": {
+        "score": 4,
+        "justification": "Arm skin texture matches lighting, but hard-edged shoulder seams show inconsistent detail."
+      },
+      "image_quality": {
+        "score": 4,
+        "justification": "Editing introduced sharp black cutouts and edge artifacts, though background and subject remain clear."
+      },
+      "color_and_lighting": {
+        "score": 5,
+        "justification": "Arm tones and shadows align with scene lighting, despite abrupt dark gaps near shoulders."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Visible hard borders and black holes at shoulder junctions make the edit obviously unfinished."
+      },
+      "alignment": {
+        "score": 4,
+        "justification": "Hands are raised as instructed, but visible disconnection and artifacts prevent a correct execution."
+      },
+      "completeness": {
+        "score": 4,
+        "justification": "Primary action executed (arms uplifted) but shoulder gaps and seams show incomplete, flawed editing."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Floating arms with black voids are anatomically implausible and visually unrealistic."
+      }
+    }
+  },
+  {
+    "image_id": "Seamlessness_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 4,
+        "justification": "Background landscape and boy's clothing remain intact, but bold black outlines alter surrounding pixels near arms."
+      },
+      "global_consistency": {
+        "score": 4,
+        "justification": "Overall scene, colors, and layout preserved, but heavy black outlines introduce a stylistic inconsistency."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "The same boy (hair, shirt, stance) is clearly retained despite altered arm rendering and added outlines."
+      },
+      "scale_realism": {
+        "score": 6,
+        "justification": "Arm length and proportions are plausible relative to the body and environment."
+      },
+      "spatial_relationship": {
+        "score": 5,
+        "justification": "Arms remain attached and positioned naturally, though their outward spread is slightly exaggerated."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Arm texture and shading are flattened and masked by solid black strokes, losing natural skin detail."
+      },
+      "image_quality": {
+        "score": 4,
+        "justification": "Image is generally clear but marred by obvious posterized black outlines and edge artifacts."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Lighting on the arms matches scene, but the stark black border breaks color and shadow continuity."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Transitions are abrupt; thick black boundaries around arms create clearly visible seams against the background."
+      },
+      "alignment": {
+        "score": 5,
+        "justification": "The boy's hands are stretched outward as instructed, though the edit includes intrusive outlining."
+      },
+      "completeness": {
+        "score": 5,
+        "justification": "Primary edit (stretched hands) is executed, but extraneous outlines indicate incomplete refinement."
+      },
+      "plausibility": {
+        "score": 4,
+        "justification": "Pose is believable, but the added black outlines make the result appear artificial and stylized."
+      }
+    }
+  },
+  {
+    "image_id": "Alignment_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 4,
+        "justification": "Background landscape remains largely identical, though minor cropping and color shifts are visible around edges."
+      },
+      "global_consistency": {
+        "score": 4,
+        "justification": "Overall scene preserved, but edited image shows warmer tones and slightly tighter framing compared to ground truth."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "The same person remains identifiable by hair, shirt, and body shape despite changes to arm pose."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Body and limbs are proportionate to surroundings; arm and torso sizes look naturally scaled to the scene."
+      },
+      "spatial_relationship": {
+        "score": 6,
+        "justification": "Boy's position relative to horizon and rock formations is maintained with only minor framing shifts."
+      },
+      "texture_and_detail": {
+        "score": 6,
+        "justification": "Clothing and ground textures remain sharp and consistent, with no obvious detail degradation on the subject."
+      },
+      "image_quality": {
+        "score": 7,
+        "justification": "Edited image is clear and sharp, showing no noticeable noise, blur, or compression artifacts."
+      },
+      "color_and_lighting": {
+        "score": 5,
+        "justification": "Lighting on the subject matches scene directionally, but overall color temperature is warmer than the ground truth."
+      },
+      "seamlessness": {
+        "score": 6,
+        "justification": "Transitions between subject and background are smooth with no visible cut edges or compositing seams."
+      },
+      "alignment": {
+        "score": 1,
+        "justification": "Instruction requested stretched-out hands, but the edited image shows the boy standing with hands down by sides."
+      },
+      "completeness": {
+        "score": 1,
+        "justification": "Required edit (arms stretched out) was not executed; arms remain lowered and unchanged in intended way."
+      },
+      "plausibility": {
+        "score": 7,
+        "justification": "Result is realistic and believable: the boy naturally stands with arms down, matching scene physics and lighting."
+      }
+    }
+  },
+  {
+    "image_id": "Texture_and_Detail_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 7,
+        "justification": "Background desert and horizon unchanged; only subject area modified."
+      },
+      "global_consistency": {
+        "score": 1,
+        "justification": "Overall photorealism replaced by flat cartoon style, drastically altering visual appearance."
+      },
+      "identity_preservation": {
+        "score": 1,
+        "justification": "Original person's facial features, hair, and clothing replaced entirely by cartoon character."
+      },
+      "scale_realism": {
+        "score": 4,
+        "justification": "Cartoon character scale matches surrounding terrain but exaggerated limb proportions look off."
+      },
+      "spatial_relationship": {
+        "score": 6,
+        "justification": "Cartoon positioned where original stood with shadow and feet aligned to the ground."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Cartoon lacks skin, fabric, and hair texture; flat colors contrast with detailed environment."
+      },
+      "image_quality": {
+        "score": 6,
+        "justification": "Edited image is sharp with no noise or blur; cutout edges are crisp."
+      },
+      "color_and_lighting": {
+        "score": 3,
+        "justification": "Flat saturated colors and simple shading on cartoon don't match the scene's natural lighting."
+      },
+      "seamlessness": {
+        "score": 1,
+        "justification": "Obvious hard edges and mismatch around arms and torso reveal a pasted cartoon."
+      },
+      "alignment": {
+        "score": 7,
+        "justification": "Subject's arms are clearly stretched outward, matching the instruction exactly."
+      },
+      "completeness": {
+        "score": 7,
+        "justification": "Instruction fully executed; hands are fully extended and visible in edited image."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Cartoon character in realistic desert appears unnatural and breaks real-world plausibility."
+      }
+    }
+  },
+  {
+    "image_id": "Global_Consistency_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 1,
+        "justification": "Whole scene converted to stylized painting; landscape colors and textures altered across entire image."
+      },
+      "global_consistency": {
+        "score": 1,
+        "justification": "Photorealistic photo turned into vivid painting; style and color scheme drastically differ."
+      },
+      "identity_preservation": {
+        "score": 4,
+        "justification": "Boy's silhouette, hair, and clothing remain recognizable despite painterly modification of facial and fabric details."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Boy's size and proportions relative to mesas remain natural; no scaling anomalies visible."
+      },
+      "spatial_relationship": {
+        "score": 7,
+        "justification": "Foreground, boy, and distant mesas maintain correct depth and relative positions."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Fine photographic detail replaced by broad brushstrokes; texture and small details are significantly altered."
+      },
+      "image_quality": {
+        "score": 6,
+        "justification": "Painted image is crisp with clear brushwork; no compression artifacts or blurring evident."
+      },
+      "color_and_lighting": {
+        "score": 1,
+        "justification": "Warm saturated palette and exaggerated lighting diverge strongly from the original scene's natural tones."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Figure and background share uniform painterly style, but this overall change creates an obvious global edit."
+      },
+      "alignment": {
+        "score": 5,
+        "justification": "Boy's arms are clearly stretched outward, matching the instruction despite other stylistic changes."
+      },
+      "completeness": {
+        "score": 7,
+        "justification": "The specific instruction is fully realized; the boy's hands are clearly extended and open."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Result looks like a coherent painted scene; pose and lighting remain believable within the artistic style."
+      }
+    }
+  },
+  {
+    "image_id": "Color_and_Lighting_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Neon colorization affected boy and surrounding ground; background hues and textures noticeably altered beyond intended pose change."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Overall photographic style replaced by vivid neon color grading, altering original desert realism visibly across the scene."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "Boy's silhouette, hair, clothing, and pose remain recognizable despite color remapping and saturation changes."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Boy's proportions and size relative to landscape unchanged; scale remains consistent and realistic."
+      },
+      "spatial_relationship": {
+        "score": 7,
+        "justification": "Relative positions of boy, rocks, and horizon are preserved; perspective and placement unchanged."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Neon mapping flattens skin and fabric detail, losing natural texture on arms and shirt."
+      },
+      "image_quality": {
+        "score": 4,
+        "justification": "Sharpness preserved but heavy posterization and color banding introduce visible artifacts."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Artificial neon hues and inconsistent shading conflict with the natural desert lighting and shadows."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Distinct color boundary around the boy's arms creates an obvious seam against the natural background."
+      },
+      "alignment": {
+        "score": 7,
+        "justification": "The boy's arms are clearly extended outward, matching the instruction to stretch out his hands."
+      },
+      "completeness": {
+        "score": 6,
+        "justification": "Arms fully extended as requested, though additional color/style alterations were applied unnecessarily."
+      },
+      "plausibility": {
+        "score": 4,
+        "justification": "Pose is realistic, but extreme neon coloration and lighting make the result visually implausible."
+      }
+    }
+  },
+  {
+    "image_id": "Spatial_Relationship_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 1,
+        "justification": "Background, rock platform, and viewpoint changed extensively beyond the boy's arms; large unrelated areas altered."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Overall layout and perspective differ noticeably; scene composition and subject placement are not preserved."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "Clothing, hair, and general silhouette remain recognizable as the same boy despite pose and location changes."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Body and limb proportions are realistic and consistent with surrounding rocks and landscape scale."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Boy stands on a different rock with altered distance and alignment to background mesas and paths."
+      },
+      "texture_and_detail": {
+        "score": 4,
+        "justification": "Skin and shirt textures roughly match, but arm detailing and edge blending show minor inconsistencies."
+      },
+      "image_quality": {
+        "score": 4,
+        "justification": "Minor blurring and compression artifacts are visible on the torso and background, but image remains clear overall."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Warm desert tones are consistent, yet subject shadows and highlight directions differ slightly from ground truth."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Transitions around arms and the rock show detectable seams and compositing artifacts upon close inspection."
+      },
+      "alignment": {
+        "score": 1,
+        "justification": "The boy's arms remain bent and are not stretched outward as required by the instruction."
+      },
+      "completeness": {
+        "score": 1,
+        "justification": "Key edit request (arms fully stretched) was not executed; hands are still raised but not extended."
+      },
+      "plausibility": {
+        "score": 7,
+        "justification": "Despite incorrect arm pose, the scene, lighting, and anatomy look natural and physically plausible."
+      }
+    }
+  },
+  {
+    "image_id": "Unchanged_Regions_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 1,
+        "justification": "Desert landscape replaced by an underwater scene; large unrelated background areas were changed."
+      },
+      "global_consistency": {
+        "score": 1,
+        "justification": "Overall color, atmosphere and layout shifted from warm desert tones to cool underwater blues."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "The same person, hair, clothing, and back-facing pose are clearly preserved."
+      },
+      "scale_realism": {
+        "score": 5,
+        "justification": "Boy's size relative to nearby rock is plausible, though coral sizes and distant monuments feel slightly off."
+      },
+      "spatial_relationship": {
+        "score": 4,
+        "justification": "Foreground placement of the boy is maintained but depth cues and background object positions differ noticeably."
+      },
+      "texture_and_detail": {
+        "score": 5,
+        "justification": "Shirt and skin detail remain sharp, but underwater haze and coral texture differ from original terrain."
+      },
+      "image_quality": {
+        "score": 7,
+        "justification": "No visible noise or strong blurring; the edited image is crisp and high quality."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Lighting shifted to a blue underwater cast, mismatching the original warm desert illumination."
+      },
+      "seamlessness": {
+        "score": 5,
+        "justification": "Edges around the subject blend reasonably well, though overall compositing is noticeable due to background change."
+      },
+      "alignment": {
+        "score": 7,
+        "justification": "The boy's hands are clearly stretched outward, matching the instruction precisely."
+      },
+      "completeness": {
+        "score": 7,
+        "justification": "The requested action (stretching the hands) is fully executed in the edited image."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Boy appears underwater wearing dry clothes with no immersion effects, making the scene unrealistic."
+      }
+    }
+  },
+  {
+    "image_id": "Completeness_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 6,
+        "justification": "Landscape, buttes, and foreground vegetation remain visually identical; minor composition and crop differences visible around edges."
+      },
+      "global_consistency": {
+        "score": 7,
+        "justification": "Color grading, perspective, and overall scene look consistent between images with matching desert tones and horizon placement."
+      },
+      "identity_preservation": {
+        "score": 7,
+        "justification": "The same boy retains hair, shirt, shorts, and posture from behind, keeping identifiable personal features intact."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Boy's proportions and relation to surrounding bushes and rocks remain realistic and appropriately scaled to the environment."
+      },
+      "spatial_relationship": {
+        "score": 6,
+        "justification": "Relative positions of boy, foreground shrubs, and distant buttes are preserved with only slight lateral shift."
+      },
+      "texture_and_detail": {
+        "score": 6,
+        "justification": "Clothing and skin texture match surrounding detail reasonably well, with only minor softening on arm edges."
+      },
+      "image_quality": {
+        "score": 7,
+        "justification": "Edited image is sharp with no obvious compression artifacts, blurring, or pixelation around main subjects."
+      },
+      "color_and_lighting": {
+        "score": 7,
+        "justification": "Lighting direction and warm desert color tones match across the boy and background convincingly."
+      },
+      "seamlessness": {
+        "score": 6,
+        "justification": "Transitions between boy and background are mostly smooth; slight edge artifacts near the left arm are noticeable."
+      },
+      "alignment": {
+        "score": 3,
+        "justification": "Only the right hand is partially raised; left hand remains down, so the requested both-arms-stretched edit is incomplete."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Instruction to have the boy stretch out his hands is only partially executed—left arm not extended."
+      },
+      "plausibility": {
+        "score": 7,
+        "justification": "Result appears physically plausible; boy's pose, lighting, and shadows are realistic within the desert scene."
+      }
+    }
+  },
+  {
+    "image_id": "Image_Quality_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 2,
+        "justification": "Large background color and texture changes across scene; landscape altered significantly."
+      },
+      "global_consistency": {
+        "score": 2,
+        "justification": "Overall style shifted to heavy grain and warmer tones, layout preserved but color drastically changed."
+      },
+      "identity_preservation": {
+        "score": 5,
+        "justification": "Boy's hair, clothing, and pose remain recognizable despite blurring and noise."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Boy's proportions relative to rocks and horizon remain realistic and consistent."
+      },
+      "spatial_relationship": {
+        "score": 7,
+        "justification": "Boy's position on cliff and distance to background landmarks unchanged."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Significant loss of fine detail and smooth skin texture replaced by heavy grain."
+      },
+      "image_quality": {
+        "score": 2,
+        "justification": "Image shows severe grain and blur throughout the frame, degrading overall image quality."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Scene shifted to saturated red tones; shadows and highlights inconsistent with source."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Edges between subject and background blurred; transition visible due to grain and blur."
+      },
+      "alignment": {
+        "score": 6,
+        "justification": "Edited pose shows hands extended upward, matching the requested hand-stretching action."
+      },
+      "completeness": {
+        "score": 6,
+        "justification": "The boy's hands are stretched as instructed; other cosmetic changes are present."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Pose and scene remain believable despite the stylized grain and color alterations."
+      }
+    }
+  },
+  {
+    "image_id": "Scale_Realism_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 1,
+        "justification": "Background vegetation and foreground composition were significantly altered; many unrelated regions changed compared to ground truth."
+      },
+      "global_consistency": {
+        "score": 3,
+        "justification": "Layout and scene composition changed dramatically; color tone similar but perspective and foreground plants differ noticeably."
+      },
+      "identity_preservation": {
+        "score": 6,
+        "justification": "Boy's back, clothing, and hair remain clearly recognizable despite large changes to his hands."
+      },
+      "scale_realism": {
+        "score": 1,
+        "justification": "Hands are massively oversized compared to the boy and surrounding environment; scale is unrealistic."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Hands appear detached and placed in front of the boy, disrupting natural spatial relationships and depth."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Hand skin texture is sharper and inconsistent with the arms and surrounding desert textures, showing compositing differences."
+      },
+      "image_quality": {
+        "score": 5,
+        "justification": "Overall image is sharp with minimal noise, though compositing edges around the hands are visible."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Warm desert lighting is preserved overall, but hands and added plants show slight color and shadow mismatches."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Clear seams and edge artifacts around the oversized hands make transitions between edited and unedited regions obvious."
+      },
+      "alignment": {
+        "score": 5,
+        "justification": "The boy's hands are extended outward as instructed, but the exaggerated size departs from a natural interpretation."
+      },
+      "completeness": {
+        "score": 5,
+        "justification": "Hands were stretched outward as requested, however the execution includes unrealistic scaling and added foreground elements."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Result is visually implausible due to giant hands and inconsistent depth cues; does not appear realistic."
+      }
+    }
+  },
+  {
+    "image_id": "Identity_Preservation_terrible.png",
+    "offline_factor_results": {
+      "unchanged_regions": {
+        "score": 6,
+        "justification": "Desert background, rocks, and pathways remain unchanged; only the person region differs."
+      },
+      "global_consistency": {
+        "score": 5,
+        "justification": "Landscape color and layout match, but subject's stylistic change (smooth mannequin) alters overall style."
+      },
+      "identity_preservation": {
+        "score": 1,
+        "justification": "Original boy replaced by faceless mannequin — hair, clothing, and facial features lost."
+      },
+      "scale_realism": {
+        "score": 7,
+        "justification": "Mannequin height and feet align proportionally with ground and surrounding shrubs."
+      },
+      "spatial_relationship": {
+        "score": 7,
+        "justification": "Figure stands at same cliff edge and orientation; surrounding objects maintain positions."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Mannequin has uniform plastic texture lacking clothing folds, hair, and skin detail."
+      },
+      "image_quality": {
+        "score": 6,
+        "justification": "Image is sharp with no noise; mannequin rendering is clean and well-defined."
+      },
+      "color_and_lighting": {
+        "score": 5,
+        "justification": "Lighting on mannequin matches scene direction but skin/clothing colors differ from original."
+      },
+      "seamlessness": {
+        "score": 4,
+        "justification": "Edges around feet and shadow are acceptable yet the subject-material transition is noticeable."
+      },
+      "alignment": {
+        "score": 4,
+        "justification": "Arms are stretched as requested, but the boy himself was replaced by a mannequin instead."
+      },
+      "completeness": {
+        "score": 4,
+        "justification": "Hands are stretched, but replacing the boy means the edit didn't fully preserve subject identity."
+      },
+      "plausibility": {
+        "score": 3,
+        "justification": "Standing pose is realistic, but the faceless smooth mannequin is unnatural in this real scene."
+      }
+    }
+  }
+]

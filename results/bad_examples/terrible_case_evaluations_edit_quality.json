@@ -1,0 +1,350 @@
+[
+  {
+    "image_id": "Plausibility_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 2,
+        "justification": "Edited Image's forearms are disproportionately long and mis-sized relative to torso and shoulders, clearly visible at both elbow cut sites."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Edited Image's arms appear disconnected and floating at the elbows; orientation and depth do not follow the shoulder rotation seen in Ground Truth."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Abrupt missing skin detail and black voids at both elbow cut zones reduce realistic texture compared with Ground Truth's continuous skin."
+      },
+      "image_quality": {
+        "score": 2,
+        "justification": "Strong edge artifacts and dark holes at the elbow junctions degrade technical quality versus Ground Truth's clean anatomical edges."
+      },
+      "color_and_lighting": {
+        "score": 3,
+        "justification": "Overall skin tones roughly match the scene, but shadowless dark gaps at elbow cuts and inconsistent highlights near hands break lighting continuity."
+      },
+      "seamlessness": {
+        "score": 1,
+        "justification": "Visible hard cut edges and black hollow areas at both elbow joints make transitions far less seamless than Ground Truth's continuous boundaries."
+      }
+    }
+  },
+  {
+    "image_id": "Seamlessness_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 3,
+        "justification": "Edited Image's arms are elongated and thicker than Ground Truth's, especially forearms and hands, appearing disproportionate to the torso."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Edited arms misaligned at shoulder joints and float slightly outward; depth and orientation inconsistent with boy's back and landscape perspective."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Edited arms show flat, posterized skin with black outline; loss of hair and shadow detail present on boy's real arms in Ground Truth."
+      },
+      "image_quality": {
+        "score": 2,
+        "justification": "Visible heavy black edge artifacting around arms and blocky rendering; Edited Image shows more compression and aliasing than Ground Truth."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Arm color and highlights in Edited Image are flatter and darker, lacking the subtle sunlit highlights visible on boy's shoulders in Ground Truth."
+      },
+      "seamlessness": {
+        "score": 1,
+        "justification": "Thick black outline and hard edges around both arms are highly visible against sky and desert, making the edit boundary obvious."
+      }
+    }
+  },
+  {
+    "image_id": "Alignment_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 2,
+        "justification": "Edited Image's arms remain at sides and hands are lower, lacking the full lateral span and forearm extension visible in Ground Truth's raised pose."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Edited Image's arms sit tight to torso with no outward separation or shoulder-level foreshortening present in Ground Truth, breaking the spatial arrangement."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Edited Image shows smoother sleeve and forearm textures, lacking the dirt, skin grain, and muscle detail visible on Ground Truth's extended arms near elbows."
+      },
+      "image_quality": {
+        "score": 5,
+        "justification": "Edited Image maintains comparable sharpness and noise across landscape and subject; no added compression artifacts or blurring beyond what appears in Ground Truth."
+      },
+      "color_and_lighting": {
+        "score": 3,
+        "justification": "Edited Image has warmer, more saturated sand and stronger backlit shadow on the subject, differing from Ground Truth's paler tones and arm highlight direction."
+      },
+      "seamlessness": {
+        "score": 5,
+        "justification": "Edited Image's subject edges (hair, shoulders) are clean with no halo; however lack of outward arms reduces boundary complexity compared to Ground Truth's arm-background transitions."
+      }
+    }
+  },
+  {
+    "image_id": "Texture_and_Detail_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 2,
+        "justification": "Edited Image's cartoon boy is much larger, covering foreground bushes and dwarfing distant buttes; Ground Truth's real boy is smaller and proportionate to landscape."
+      },
+      "spatial_relationship": {
+        "score": 2,
+        "justification": "Cartoon boy sits flat on foreground without matching ground slope; shadow and feet placement ignore ridge contours visible in Ground Truth's scene."
+      },
+      "texture_and_detail": {
+        "score": 1,
+        "justification": "Edited image's flat vector colors, bold outlines on the boy lack skin, clothing texture and hair detail present on the real boy in Ground Truth."
+      },
+      "image_quality": {
+        "score": 3,
+        "justification": "Cartoon has crisp edges and no photographic grain, but contrasts with Ground Truth's natural film grain and soft focus on distant mesas."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Cartoon boy's saturated flat colors and uniform shading don't match desert's warm directional sunlight and highlights on the terrain in Ground Truth."
+      },
+      "seamlessness": {
+        "score": 1,
+        "justification": "Bold black outline and sharp cut edges around cartoon boy create visible paste-in; Ground Truth shows continuous edge blending and natural occlusion."
+      }
+    }
+  },
+  {
+    "image_id": "Global_Consistency_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 5,
+        "justification": "Edited Image's forearms and hands are proportionally shorter and closer to the torso; they are less extended sideways than the Ground Truth's wide, outstretched arms."
+      },
+      "spatial_relationship": {
+        "score": 4,
+        "justification": "Edited Image's elbows remain bent and hands angled inward, reducing alignment with the horizon and distant buttes compared to Ground Truth's symmetric outward arm placement."
+      },
+      "texture_and_detail": {
+        "score": 6,
+        "justification": "Edited Image preserves photographic skin pores, shirt creases and sand grain detail on arms, providing finer texture than Ground Truth's broad painterly brushstrokes."
+      },
+      "image_quality": {
+        "score": 6,
+        "justification": "Edited Image is sharp with high-frequency detail and minimal noise across the boy and foreground rocks; Ground Truth shows intentional painterly texture instead of photographic grain."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Edited Image uses neutral daylight and soft shadows on the boy's arms and back, unlike Ground Truth's saturated warm orange lighting and stronger directional highlights."
+      },
+      "seamlessness": {
+        "score": 6,
+        "justification": "Edited Image has clean arm-to-shirt boundaries at shoulders and wrists with no visible halos; Ground Truth blends edges with brushstrokes, making transitions stylistically different."
+      }
+    }
+  },
+  {
+    "image_id": "Color_and_Lighting_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 6,
+        "justification": "Edited Image's arms and hands keep same relative size to head and torso as Ground Truth; no obvious oversizing of hands or elongated limbs."
+      },
+      "spatial_relationship": {
+        "score": 6,
+        "justification": "Edited Image's raised arms remain anchored at the shoulders and follow the ground plane; horizon, path, and nearby shrubs preserve correct depth ordering."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Edited Image's rainbow remapping obliterates skin pores, shirt fabric folds, and shoe details on the boy's back, arms, and legs compared to Ground Truth."
+      },
+      "image_quality": {
+        "score": 3,
+        "justification": "Edited Image shows posterization and banding across the boy's shirt and arms; color artifacts reduce subtle shading and increase visible compression-like gradients."
+      },
+      "color_and_lighting": {
+        "score": 1,
+        "justification": "Edited Image's vivid magenta-blue-green mapping on the boy contradicts the warm desert sunlight; highlights and shadows on shirt and arms no longer match scene lighting."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Edited Image's neon color transitions at the boy's silhouette and arm edges contrast strongly with background, making boundaries more visible than in Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Spatial_Relationship_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 5,
+        "justification": "Edited Image's hands appear slightly larger relative to the boy's head and torso (especially right hand, viewer-left) than in Ground Truth."
+      },
+      "spatial_relationship": {
+        "score": 5,
+        "justification": "Edited arms align with shoulders but elbow angles (both arms) are marginally more outward and less natural than Ground Truth's more relaxed pose."
+      },
+      "texture_and_detail": {
+        "score": 5,
+        "justification": "Edited arm skin and shirt detail are slightly smoother with reduced creases on the right sleeve (viewer-right) compared to Ground Truth's sharper textures."
+      },
+      "image_quality": {
+        "score": 5,
+        "justification": "Edited Image exhibits similar sharpness overall but slight edge blending and compression near the wrists (both hands) compared to Ground Truth."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Edited Image has warmer overall tint and weaker shadow under the left arm (viewer-right), reducing consistency with scene lighting versus Ground Truth."
+      },
+      "seamlessness": {
+        "score": 4,
+        "justification": "Visible edge blending around both wrists and fingers (especially viewer-left hand) shows minor halos, less seamless than Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Unchanged_Regions_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 6,
+        "justification": "Edited Image's hands match Ground Truth size relative to torso; fingertips and wrists proportionally consistent when compared to the central subject."
+      },
+      "spatial_relationship": {
+        "score": 5,
+        "justification": "Edited Image positions arms similarly extended; depth between hands and distant formations remains logical, though underwater reef introduces different background depth."
+      },
+      "texture_and_detail": {
+        "score": 3,
+        "justification": "Edited Image shows smoother skin and reduced sand/grit detail on arms and shoulders compared to Ground Truth's textured forearms."
+      },
+      "image_quality": {
+        "score": 4,
+        "justification": "Edited Image has slight underwater haze and softer edges on arms and back compared to Ground Truth's crisper desert image."
+      },
+      "color_and_lighting": {
+        "score": 3,
+        "justification": "Edited Image applies cool blue tint and light rays; boy's warm skin highlights from Ground Truth are desaturated and lighting direction less consistent."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Edited Image shows faint edge artifacts around hair and lower legs against reef; transitions less seamless than Ground Truth's continuous horizon."
+      }
+    }
+  },
+  {
+    "image_id": "Completeness_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 4,
+        "justification": "Edited Image's extended left arm appears slightly longer and forearm thinner than Ground Truth's, making proportions less natural relative to torso and head."
+      },
+      "spatial_relationship": {
+        "score": 4,
+        "justification": "Edited Image shows left arm placed more forward and slightly disconnected at the shoulder than Ground Truth, depth and orientation less consistent with torso."
+      },
+      "texture_and_detail": {
+        "score": 5,
+        "justification": "Skin texture and shirt detail on the extended arm in Edited Image are slightly smoother than Ground Truth but generally consistent with surrounding body."
+      },
+      "image_quality": {
+        "score": 5,
+        "justification": "Edited Image retains overall sharpness and low noise comparable to Ground Truth; minor softening around wrist and hand reduces local detail slightly."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Edited arm color and shadow in Edited Image are marginally warmer and lack the same directional shadow under the arm visible in Ground Truth."
+      },
+      "seamlessness": {
+        "score": 4,
+        "justification": "Edge blending around the left shoulder and hand in Edited Image shows a faint boundary and slight halo compared to Ground Truth's cleaner transitions."
+      }
+    }
+  },
+  {
+    "image_id": "Image_Quality_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 5,
+        "justification": "Edited Image's arm proportions match overall torso scale, but hands appear slightly smaller and farther from the body on left and right arms."
+      },
+      "spatial_relationship": {
+        "score": 6,
+        "justification": "Edited preserves arm placement relative to shoulders and cliff edge; depth ordering remains logical though background recedes with more blur."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Edited image shows heavy grain and loss of skin, hair, and shirt texture on the boy's arms and torso compared with sharp ground truth detail."
+      },
+      "image_quality": {
+        "score": 2,
+        "justification": "Significant blur and film-like noise degrade technical quality; boy, foreground rocks, and horizon are noticeably softer than in ground truth."
+      },
+      "color_and_lighting": {
+        "score": 3,
+        "justification": "Edited shows warmer reddish color cast and reduced shadow contrast; highlights on the boy's shoulders and ground are less natural than ground truth."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Edges around the boy's arms and shirt are blurred with grainy halos; transitions into sky and foreground are less seamless than in ground truth."
+      }
+    }
+  },
+  {
+    "image_id": "Scale_Realism_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 2,
+        "justification": "Edited Image's boy is much smaller in center-bottom than Ground Truth's large foreground figure, making human scale inconsistent with nearby shrubs and rock."
+      },
+      "spatial_relationship": {
+        "score": 3,
+        "justification": "Edited boy sits lower and farther in scene; placement ignores original cliff edge's vantage, reducing believable depth compared to Ground Truth."
+      },
+      "texture_and_detail": {
+        "score": 2,
+        "justification": "Edited figure lacks the fine clothing wrinkles and arm skin detail visible in Ground Truth's close-up; textures appear overly smooth and simplified."
+      },
+      "image_quality": {
+        "score": 3,
+        "justification": "Edited boy exhibits mild edge artifacts and compression in center-bottom, whereas Ground Truth's foreground maintains cleaner, more consistent detail."
+      },
+      "color_and_lighting": {
+        "score": 4,
+        "justification": "Edited subject's tones are slightly darker and flatter; shadow direction is roughly consistent but shirt and skin color don't fully match warm desert light."
+      },
+      "seamlessness": {
+        "score": 3,
+        "justification": "Hard edges and a subtle halo around the small center-bottom figure are visible; integration is less smooth than Ground Truth's natural foreground blend."
+      }
+    }
+  },
+  {
+    "image_id": "Identity_Preservation_terrible.png",
+    "offline_factor_results": {
+      "scale_realism": {
+        "score": 3,
+        "justification": "Edited Image's mannequin (center foreground) is stockier with oversized hands and thicker limbs compared to Ground Truth boy's natural, slender proportions."
+      },
+      "spatial_relationship": {
+        "score": 3,
+        "justification": "Mannequin (center foreground) stands slightly off the rock edge; feet appear less grounded and depth integration is weaker than Ground Truth boy's placement."
+      },
+      "texture_and_detail": {
+        "score": 1,
+        "justification": "Edited mannequin shows uniform plastic surface lacking hair, clothing wrinkles, skin grain, and arm tattoos present on the Ground Truth boy's arms and shirt."
+      },
+      "image_quality": {
+        "score": 2,
+        "justification": "CGI mannequin exhibits overly smooth rendering and subtle edge aliasing; loses photographic film grain and natural micro-detail visible on Ground Truth boy."
+      },
+      "color_and_lighting": {
+        "score": 2,
+        "justification": "Flat beige mannequin color and uniform shading (center figure) mismatches warm desert tonality; highlights and shadows don't align with the scene's sunlight."
+      },
+      "seamlessness": {
+        "score": 2,
+        "justification": "Edges around the mannequin (center foreground) are unnaturally crisp with no hair/clothing blending; composite appears synthetic compared with Ground Truth integration."
+      }
+    }
+  }
+]
