@@ -1,8 +1,3 @@
-# Traditional evaluation metrics for image editing
-# 
-# Mask format: Color mask images where white/blank areas indicate regions that need editing
-# - White/blank areas (high pixel values) = regions to be edited
-# - Colored areas (low pixel values) = regions to be preserved
 import os
 import json
 import numpy as np
@@ -56,18 +51,6 @@ start_time = time.time()
 
 # Initialize models
 device = "cuda" if torch.cuda.is_available() else "cpu"
-# print("Loading CLIP model...")
-# clip_model_path = os.path.join(PROJECT_ROOT, "checkpoints", "openai_clip-vit-base-patch32")
-# clip_model = CLIPModel.from_pretrained(clip_model_path, use_safetensors=False).to(device)
-# clip_processor = CLIPProcessor.from_pretrained(clip_model_path)
-
-# print("Loading DINO model...")
-# dino_model_path = os.path.join(PROJECT_ROOT, "checkpoints", "facebook_dino-vits16")
-# dino_processor = AutoImageProcessor.from_pretrained(dino_model_path)
-# dino_model = AutoModel.from_pretrained(dino_model_path, use_safetensors=False)
-# dino_model.eval()
-# if torch.cuda.is_available():
-#     dino_model = dino_model.cuda()
 
 print("Loading LPIPS model...")
 lpips_model = lpips.LPIPS(net='alex').to("cuda" if torch.cuda.is_available() else "cpu")
@@ -137,71 +120,11 @@ def calculate_l1_l2_metrics(img1_path, img2_path):
     return l1_error, l2_error
 
 def calculate_clip_similarity(img1_path, img2_path):
-    """CLIP similarity temporarily disabled; return None.
-
-    Original implementation preserved below for reference:
-    """
-    # try:
-    #     # Load images
-    #     img1 = Image.open(img1_path).convert('RGB')
-    #     img2 = Image.open(img2_path).convert('RGB')
-    #     
-    #     # Preprocess images using CLIP processor
-    #     inputs1 = clip_processor(images=img1, return_tensors="pt").to(device)
-    #     inputs2 = clip_processor(images=img2, return_tensors="pt").to(device)
-    #     
-    #     # Get image features
-    #     with torch.no_grad():
-    #         outputs1 = clip_model.get_image_features(**inputs1)
-    #         outputs2 = clip_model.get_image_features(**inputs2)
-    #         
-    #         # Normalize features
-    #         img1_features = F.normalize(outputs1, p=2, dim=1)
-    #         img2_features = F.normalize(outputs2, p=2, dim=1)
-    #         
-    #         # Calculate cosine similarity
-    #         similarity = torch.cosine_similarity(img1_features, img2_features, dim=1).item()
-    #     
-    #     return similarity
-    # except Exception as e:
-    #     print(f"Error calculating CLIP similarity: {e}")
-    #     return None
+    
     return None
 
 def calculate_dino_similarity(img1_path, img2_path):
-    """DINO similarity temporarily disabled; return None.
 
-    Original implementation preserved below for reference:
-    """
-    # try:
-    #     # Load and preprocess images
-    #     img1 = Image.open(img1_path).convert('RGB')
-    #     img2 = Image.open(img2_path).convert('RGB')
-    #     
-    #     # Preprocess for DINO
-    #     img1_tensor = dino_processor(img1, return_tensors="pt")["pixel_values"]
-    #     img2_tensor = dino_processor(img2, return_tensors="pt")["pixel_values"]
-    #     
-    #     if torch.cuda.is_available():
-    #         img1_tensor = img1_tensor.cuda()
-    #         img2_tensor = img2_tensor.cuda()
-    #     
-    #     # Get image features
-    #     with torch.no_grad():
-    #         img1_features = dino_model(img1_tensor).last_hidden_state.mean(dim=1)  # Global average pooling
-    #         img2_features = dino_model(img2_tensor).last_hidden_state.mean(dim=1)
-    #         
-    #         # Normalize features
-    #         img1_features = F.normalize(img1_features, p=2, dim=1)
-    #         img2_features = F.normalize(img2_features, p=2, dim=1)
-    #         
-    #         # Calculate cosine similarity
-    #         similarity = torch.cosine_similarity(img1_features, img2_features, dim=1).item()
-    #     
-    #     return similarity
-    # except Exception as e:
-    #     print(f"Error calculating DINO similarity: {e}")
-    #     return None
     return None
 
 def calculate_psnr_ssim_lpips(img1_path, img2_path):
@@ -257,15 +180,11 @@ def create_binary_mask_from_color_mask(mask_path, threshold=200):
         binary_mask: Binary mask where 1 indicates edit regions (white/blank areas)
     """
     try:
-        # Load mask as RGB
         mask = Image.open(mask_path).convert('RGB')
         mask_np = np.array(mask)
         
-        # Convert to grayscale
         mask_gray = np.mean(mask_np, axis=2)
         
-        # Create binary mask: white/blank areas (high values) = 1, colored areas = 0
-        # White/blank areas indicate regions that need editing
         binary_mask = (mask_gray > threshold).astype(np.float32)
         
         print(f"Mask processing: {mask_path}")
@@ -295,19 +214,14 @@ def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
         if binary_mask is None:
             return None, None
         
-        # Ensure mask has same size as images
         if binary_mask.shape[:2] != img1.size[::-1]:  # PIL size is (width, height), numpy is (height, width)
             mask_pil = Image.fromarray((binary_mask * 255).astype(np.uint8))
             mask_pil = mask_pil.resize(img1.size, Image.Resampling.LANCZOS)
             binary_mask = np.array(mask_pil) / 255.0
         
-        # Convert to numpy arrays for SSIM
         img1_np = np.array(img1)
         img2_np = np.array(img2)
-        
-        # Calculate Mask-SSIM (weighted by mask)
-        # For mask-weighted SSIM, we need to calculate it differently
-        # since skimage SSIM doesn't directly support weights parameter
+
         ssim_value = ssim(img1_np, img2_np, channel_axis=2, data_range=255)
         
         # Calculate Mask-LPIPS
@@ -342,20 +256,15 @@ def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
 def calculate_background_consistency(img1_path, img2_path):
     """Calculate Background Consistency metric"""
     try:
-        # Load images
         img1 = Image.open(img1_path).convert('RGB')
         img2 = Image.open(img2_path).convert('RGB')
-        
-        # Ensure same size
+
         if img1.size != img2.size:
             img2 = img2.resize(img1.size, Image.Resampling.LANCZOS)
-        
-        # Convert to numpy arrays
+
         img1_np = np.array(img1)
         img2_np = np.array(img2)
-        
-        # Calculate background consistency as SSIM of the entire image
-        # This measures how well the background regions are preserved
+
         consistency = ssim(img1_np, img2_np, channel_axis=2, data_range=255)
         
         return consistency
@@ -860,7 +769,7 @@ def process_single_evaluation(api_image_name):
     }
     results.append(online_result)
     
-    print(f"✅ Successfully evaluated {base_name}")
+    print(f"Successfully evaluated {base_name}")
     print(f"OFFLINE SETTING:")
     print(f"  Pixel-level Fidelity:")
     print(f"    L1 Error: {l1_error_offline:.6f}")
@@ -916,11 +825,11 @@ def process_single_evaluation_threaded(api_image_name, processed_ids):
         if evaluation_results is not None:
             # Save immediately after each successful evaluation (thread-safe)
             save_to_jsonl(evaluation_results, OUTPUT_JSONL_PATH)
-            return evaluation_results, f"✓ Saved: {api_image_name}"
+            return evaluation_results, f"Saved: {api_image_name}"
         else:
-            return None, f"✗ Failed: {api_image_name}"
+            return None, f"Failed: {api_image_name}"
     except Exception as e:
-        return None, f"✗ Error processing {api_image_name}: {str(e)}"
+        return None, f"Error processing {api_image_name}: {str(e)}"
 
 def main():
     """Main function to process all evaluations"""
@@ -976,12 +885,12 @@ def main():
                 
                 if evaluation_results is not None:
                     evaluations.extend(evaluation_results)
-                    pbar.set_postfix_str(f"✓ {api_image}")
+                    pbar.set_postfix_str(f"{api_image}")
                 else:
-                    pbar.set_postfix_str(f"✗ {api_image}")
+                    pbar.set_postfix_str(f"Failed: {api_image}")
                     
             except Exception as e:
-                pbar.set_postfix_str(f"✗ Error: {api_image}")
+                pbar.set_postfix_str(f"Error: {api_image}")
                 print(f"Error processing {api_image}: {e}")
             
             pbar.update(1)
@@ -1042,10 +951,10 @@ def main():
             # Save task metrics immediately (thread-safe)
             save_to_jsonl([task_metric_offline, task_metric_online], OUTPUT_JSONL_PATH)
             
-            return [task_metric_offline, task_metric_online], f"✓ Saved: {task} (FID: {fid_offline_value:.2f}/{fid_online_value:.2f}, IS: {is_offline_value:.2f}/{is_online_value:.2f})"
+            return [task_metric_offline, task_metric_online], f"Saved: {task} (FID: {fid_offline_value:.2f}/{fid_online_value:.2f}, IS: {is_offline_value:.2f}/{is_online_value:.2f})"
             
         except Exception as e:
-            return None, f"✗ Error processing {task}: {str(e)}"
+            return None, f"Error processing {task}: {str(e)}"
     
     # Use ThreadPoolExecutor for parallel task processing
     with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(all_tasks))) as executor:
@@ -1066,12 +975,12 @@ def main():
                 
                 if task_results is not None:
                     task_metrics.extend(task_results)
-                    task_pbar.set_postfix_str(f"✓ {task}")
+                    task_pbar.set_postfix_str(f"{task}")
                 else:
-                    task_pbar.set_postfix_str(f"✗ {task}")
+                    task_pbar.set_postfix_str(f"Failed: {task}")
                     
             except Exception as e:
-                task_pbar.set_postfix_str(f"✗ Error: {task}")
+                task_pbar.set_postfix_str(f"Error: {task}")
                 print(f"Error processing task {task}: {e}")
             
             task_pbar.update(1)

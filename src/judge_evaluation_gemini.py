@@ -71,7 +71,7 @@ def get_instruction_from_file(instruction_path):
 
 def test_model_capabilities():
     """Test if the model supports image processing"""
-    print("🧪 Testing model capabilities...")
+    print("Testing model capabilities...")
     
     try:
         response = client.models.generate_content(
@@ -82,13 +82,13 @@ def test_model_capabilities():
         )
         
         if response and response.text:
-            print(f"✅ Model responds to text: {response.text}")
+            print(f"Model responds to text: {response.text}")
             return True
         else:
-            print(f"❌ Model response structure issue: {response}")
+            print(f"Model response structure issue: {response}")
             return False
     except Exception as e:
-        print(f"❌ Model test error: {e}")
+        print(f"Model test error: {e}")
         return False
 
 def call_gemini_with_images(image1_path, image2_path, instruction, base_name, prompt_template, image1_placeholder, image2_placeholder, max_retries=3):
@@ -137,7 +137,7 @@ def call_gemini_with_images(image1_path, image2_path, instruction, base_name, pr
                 
                 return model_output
             else:
-                print(f"❌ Empty or invalid response from Gemini API")
+                print(f"Empty or invalid response from Gemini API")
                 print(f"Response: {response}")
                 if attempt == max_retries - 1:
                     return None
@@ -181,21 +181,21 @@ def extract_json_from_response(response_text):
             
             try:
                 parsed_json = json.loads(json_str)
-                print("✅ JSON parsing successful!")
+                print("JSON parsing successful!")
                 print("-"*60 + "\n")
                 return parsed_json
             except json.JSONDecodeError as e:
-                print(f"❌ JSON decode error: {e}")
+                print(f"JSON decode error: {e}")
                 # Try to fix common JSON issues
                 json_str = json_str.replace('\n', ' ').replace('\r', ' ')
                 print("Trying to fix JSON by removing newlines...")
                 try:
                     parsed_json = json.loads(json_str)
-                    print("✅ JSON parsing successful after fix!")
+                    print("JSON parsing successful after fix!")
                     print("-"*60 + "\n")
                     return parsed_json
                 except json.JSONDecodeError as e2:
-                    print(f"❌ Still failed after fix: {e2}")
+                    print(f"Still failed after fix: {e2}")
                     print(f"Problematic JSON: {json_str[:500]}...")
                     print("-"*60 + "\n")
                     return None
@@ -212,11 +212,11 @@ def extract_json_from_response(response_text):
                 print(f"JSON preview: {json_str[:200]}...")
                 try:
                     parsed_json = json.loads(json_str)
-                    print("✅ JSON parsing successful from code block!")
+                    print("JSON parsing successful from code block!")
                     print("-"*60 + "\n")
                     return parsed_json
                 except json.JSONDecodeError as e:
-                    print(f"❌ JSON decode error from code block: {e}")
+                    print(f"JSON decode error from code block: {e}")
         
         # Method 3: Try to find JSON in code blocks without language specifier
         if '```' in response_text:
@@ -231,13 +231,13 @@ def extract_json_from_response(response_text):
                     print(f"JSON preview: {json_str[:200]}...")
                     try:
                         parsed_json = json.loads(json_str)
-                        print("✅ JSON parsing successful from code block!")
+                        print("JSON parsing successful from code block!")
                         print("-"*60 + "\n")
                         return parsed_json
                     except json.JSONDecodeError as e:
-                        print(f"❌ JSON decode error from code block: {e}")
+                        print(f"JSON decode error from code block: {e}")
         
-        print("❌ No JSON found in response")
+        print("No JSON found in response")
         print(f"Full response: {response_text}")
         print("-"*60 + "\n")
         return None
@@ -277,7 +277,7 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
     
     print(f"Processing evaluation for: {base_name}")
     print(f"Instruction: {instruction}")
-    print(f"⏰ Timeout set to: {timeout_seconds} seconds ({timeout_seconds/60:.1f} minutes)")
+    print(f"Timeout set to: {timeout_seconds} seconds ({timeout_seconds/60:.1f} minutes)")
     print("\n" + "="*80)
     print(f"EVALUATING: {base_name}")
     print("="*80)
@@ -288,7 +288,7 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
     
     try:
         # Process offline setting
-        print("🔄 Processing OFFLINE setting...")
+        print("Processing OFFLINE setting...")
         offline_response = call_gemini_with_images(
             ground_truth_path, 
             edited_path, 
@@ -300,23 +300,23 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
         )
         
         if offline_response is None:
-            print(f"❌ Failed to get offline response for {base_name}")
+            print(f"Failed to get offline response for {base_name}")
             print("="*80 + "\n")
             return None
         
         # Extract JSON from offline response
-        print(f"🔍 Extracting JSON from offline response for {base_name}...")
+        print(f"Extracting JSON from offline response for {base_name}...")
         offline_result = extract_json_from_response(offline_response)
         
         if offline_result is None:
-            print(f"❌ Failed to parse offline JSON for {base_name}")
+            print(f"Failed to parse offline JSON for {base_name}")
             print("="*80 + "\n")
             return None
         
-        print(f"✅ Successfully parsed offline JSON for {base_name}")
+        print(f"Successfully parsed offline JSON for {base_name}")
         
         # Process online setting
-        print("🔄 Processing ONLINE setting...")
+        print("Processing ONLINE setting...")
         online_response = call_gemini_with_images(
             input_path, 
             edited_path, 
@@ -328,20 +328,20 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
         )
         
         if online_response is None:
-            print(f"❌ Failed to get online response for {base_name}")
+            print(f"Failed to get online response for {base_name}")
             print("="*80 + "\n")
             return None
         
         # Extract JSON from online response
-        print(f"🔍 Extracting JSON from online response for {base_name}...")
+        print(f"Extracting JSON from online response for {base_name}...")
         online_result = extract_json_from_response(online_response)
         
         if online_result is None:
-            print(f"❌ Failed to parse online JSON for {base_name}")
+            print(f"Failed to parse online JSON for {base_name}")
             print("="*80 + "\n")
             return None
         
-        print(f"✅ Successfully parsed online JSON for {base_name}")
+        print(f"Successfully parsed online JSON for {base_name}")
         
         # Merge results
         merged_result = {
@@ -350,18 +350,18 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
             "online_factor_results": online_result.get("online_factor_results", {})
         }
         
-        print(f"✅ Successfully merged results for {base_name}")
+        print(f"Successfully merged results for {base_name}")
         print("="*80 + "\n")
         
         return merged_result
         
     except TimeoutError:
-        print(f"⏰ TIMEOUT: Processing {base_name} exceeded {timeout_seconds} seconds ({timeout_seconds/60:.1f} minutes)")
-        print(f"⏭️  Skipping {base_name} due to timeout")
+        print(f"TIMEOUT: Processing {base_name} exceeded {timeout_seconds} seconds ({timeout_seconds/60:.1f} minutes)")
+        print(f"Skipping {base_name} due to timeout")
         print("="*80 + "\n")
         return None
     except Exception as e:
-        print(f"❌ Unexpected error processing {base_name}: {e}")
+        print(f"Unexpected error processing {base_name}: {e}")
         print("="*80 + "\n")
         return None
     finally:
@@ -389,7 +389,7 @@ def main():
     
     # Test model capabilities first
     if not test_model_capabilities():
-        print("❌ Model test failed. Please check your model configuration.")
+        print("Model test failed. Please check your model configuration.")
         return
     
     # Get all API images
@@ -423,7 +423,7 @@ def main():
             continue
             
         print(f"\nProcessing {i+1}/{len(api_images)}: {api_image}")
-        print("🔄 Processing both OFFLINE and ONLINE settings...")
+        print("Processing both OFFLINE and ONLINE settings...")
         
         start_time = time.time()
         evaluation = process_single_evaluation(api_image)
@@ -433,18 +433,18 @@ def main():
         evaluations.append(evaluation)
         
         if evaluation is not None:
-            print(f"✓ Successfully evaluated {api_image} (took {processing_time:.1f}s)")
-            print(f"📊 Results include both offline and online factor results")
+            print(f"Successfully evaluated {api_image} (took {processing_time:.1f}s)")
+            print(f"Results include both offline and online factor results")
             # Save immediately after each successful evaluation
             save_to_jsonl([evaluation], OUTPUT_JSONL_PATH)
-            print(f"💾 Results saved to: {OUTPUT_JSONL_PATH}")
+            print(f"Results saved to: {OUTPUT_JSONL_PATH}")
         else:
             # Check if it was a timeout (processing time close to 5 minutes)
             if processing_time >= 290:  # Close to 5 minutes (300 seconds)
                 timeout_count += 1
-                print(f"⏰ Timeout: {api_image} (took {processing_time:.1f}s)")
+                print(f"Timeout: {api_image} (took {processing_time:.1f}s)")
             else:
-                print(f"✗ Failed to evaluate {api_image} (took {processing_time:.1f}s)")
+                print(f"Failed to evaluate {api_image} (took {processing_time:.1f}s)")
         
         # Add delay between requests to avoid rate limiting
         if i < len(api_images) - 1:  # Don't wait after the last request
@@ -462,7 +462,7 @@ def main():
     print(f"Failed (including timeouts): {failed}")
     print(f"Timeouts: {timeout_count}")
     print(f"Results saved to: {OUTPUT_JSONL_PATH}")
-    print("📊 Each result includes both offline_factor_results and online_factor_results")
+    print("Each result includes both offline_factor_results and online_factor_results")
 
 if __name__ == "__main__":
     main()
