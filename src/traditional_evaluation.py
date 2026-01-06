@@ -8,7 +8,6 @@ from torchvision import transforms
 from skimage.metrics import structural_similarity as ssim
 from skimage.metrics import peak_signal_noise_ratio as psnr
 import lpips
-# from transformers import AutoImageProcessor, AutoModel, CLIPProcessor, CLIPModel  # Temporarily disabled (CLIP/DINO)
 import torchvision.transforms as T
 from scipy import linalg
 from torchvision.models import inception_v3
@@ -21,9 +20,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 from functools import partial
 
-# Fixed paths (relative to this script's location)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # Go up one level from src/ to pipeline/
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 API_IMG_DIR = os.path.join(PROJECT_ROOT, "HumanEdit", "api_img_400")
 GT_IMG_DIR = os.path.join(PROJECT_ROOT, "HumanEdit", "gt_img_400")
 INPUT_IMG_DIR = os.path.join(PROJECT_ROOT, "HumanEdit", "input_img_400")
@@ -31,45 +29,35 @@ MASK_IMG_DIR = os.path.join(PROJECT_ROOT, "HumanEdit", "mask_img_400")
 INSTRUCTIONS_DIR = os.path.join(PROJECT_ROOT, "HumanEdit", "instructions_400")
 OUTPUT_JSONL_PATH = os.path.join(PROJECT_ROOT, "results", "traditional_evaluations.jsonl")
 
-# Create output directories
 os.makedirs(os.path.dirname(OUTPUT_JSONL_PATH), exist_ok=True)
 
-# Threading configuration
-# You can modify MAX_WORKERS to adjust the number of parallel threads
-# For CPU-intensive tasks, use fewer threads; for I/O-intensive tasks, use more
-MAX_WORKERS = min(4, os.cpu_count())  # Limit to 8 workers or CPU count
+MAX_WORKERS = min(4, os.cpu_count())
 print(f"Using {MAX_WORKERS} threads for parallel processing")
 print(f"Available CPU cores: {os.cpu_count()}")
 print(f"Note: Adjust MAX_WORKERS in the code if you want different threading behavior")
 
-# Thread-safe lock for file writing
 file_lock = threading.Lock()
 
-# Performance monitoring
 import time
 start_time = time.time()
 
-# Initialize models
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 print("Loading LPIPS model...")
 lpips_model = lpips.LPIPS(net='alex').to("cuda" if torch.cuda.is_available() else "cpu")
 
-# Initialize Inception model for FID and IS
 print("Loading Inception model...")
 inception_model = inception_v3(pretrained=True, transform_input=False)
 inception_model.eval()
 if torch.cuda.is_available():
     inception_model = inception_model.cuda()
 
-# Remove the final classification layer for feature extraction
 class InceptionFeatureExtractor(nn.Module):
     def __init__(self, inception_model):
         super().__init__()
         self.inception = inception_model
         
     def forward(self, x):
-        # Get features before the final classification layer
         x = self.inception.Conv2d_1a_3x3(x)
         x = self.inception.Conv2d_2a_3x3(x)
         x = self.inception.Conv2d_2b_3x3(x)
@@ -97,7 +85,6 @@ if torch.cuda.is_available():
     inception_feature_extractor = inception_feature_extractor.cuda()
 
 def load_image_as_tensor(image_path):
-    """Load image and convert to tensor"""
     image = Image.open(image_path).convert('RGB')
     transform = transforms.Compose([
         transforms.ToTensor()
@@ -105,15 +92,12 @@ def load_image_as_tensor(image_path):
     return transform(image)
 
 def calculate_l1_l2_metrics(img1_path, img2_path):
-    """Calculate L1 and L2 pixel-wise errors"""
     img1 = load_image_as_tensor(img1_path)
     img2 = load_image_as_tensor(img2_path)
     
-    # Ensure same size
     if img1.shape != img2.shape:
         img2 = F.interpolate(img2.unsqueeze(0), size=img1.shape[1:], mode='bilinear', align_corners=False).squeeze(0)
     
-    # Calculate L1 and L2 errors
     l1_error = torch.mean(torch.abs(img1 - img2)).item()
     l2_error = torch.mean((img1 - img2) ** 2).item()
     
@@ -128,27 +112,20 @@ def calculate_dino_similarity(img1_path, img2_path):
     return None
 
 def calculate_psnr_ssim_lpips(img1_path, img2_path):
-    """Calculate PSNR, SSIM, and LPIPS metrics"""
     try:
-        # Load images
         img1 = Image.open(img1_path).convert('RGB')
         img2 = Image.open(img2_path).convert('RGB')
         
-        # Ensure same size
         if img1.size != img2.size:
             img2 = img2.resize(img1.size, Image.Resampling.LANCZOS)
         
-        # Convert to numpy arrays for PSNR and SSIM
         img1_np = np.array(img1)
         img2_np = np.array(img2)
         
-        # Calculate PSNR
         psnr_value = psnr(img1_np, img2_np, data_range=255)
         
-        # Calculate SSIM
         ssim_value = ssim(img1_np, img2_np, channel_axis=2, data_range=255)
         
-        # Calculate LPIPS
         transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
@@ -170,15 +147,6 @@ def calculate_psnr_ssim_lpips(img1_path, img2_path):
         return None, None, None
 
 def create_binary_mask_from_color_mask(mask_path, threshold=200):
-    """Create binary mask from color mask where white/blank areas indicate edit regions
-    
-    Args:
-        mask_path: Path to color mask image
-        threshold: Threshold value to distinguish white/blank areas from colored areas
-    
-    Returns:
-        binary_mask: Binary mask where 1 indicates edit regions (white/blank areas)
-    """
     try:
         mask = Image.open(mask_path).convert('RGB')
         mask_np = np.array(mask)
@@ -199,22 +167,18 @@ def create_binary_mask_from_color_mask(mask_path, threshold=200):
         return None
 
 def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
-    """Calculate Mask-SSIM and Mask-LPIPS metrics using mask"""
     try:
-        # Load images
         img1 = Image.open(img1_path).convert('RGB')
         img2 = Image.open(img2_path).convert('RGB')
         
-        # Ensure same size
         if img1.size != img2.size:
             img2 = img2.resize(img1.size, Image.Resampling.LANCZOS)
         
-        # Create binary mask from color mask
         binary_mask = create_binary_mask_from_color_mask(mask_path)
         if binary_mask is None:
             return None, None
         
-        if binary_mask.shape[:2] != img1.size[::-1]:  # PIL size is (width, height), numpy is (height, width)
+        if binary_mask.shape[:2] != img1.size[::-1]:
             mask_pil = Image.fromarray((binary_mask * 255).astype(np.uint8))
             mask_pil = mask_pil.resize(img1.size, Image.Resampling.LANCZOS)
             binary_mask = np.array(mask_pil) / 255.0
@@ -224,7 +188,6 @@ def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
 
         ssim_value = ssim(img1_np, img2_np, channel_axis=2, data_range=255)
         
-        # Calculate Mask-LPIPS
         transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
@@ -241,7 +204,6 @@ def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
         
         with torch.no_grad():
             lpips_value = lpips_model(img1_tensor, img2_tensor)
-            # Apply mask weighting - only consider the white/blank areas (where mask=1)
             if mask_tensor.sum() > 0:
                 lpips_value = (lpips_value * mask_tensor).sum() / mask_tensor.sum()
             else:
@@ -254,7 +216,6 @@ def calculate_mask_ssim_lpips(img1_path, img2_path, mask_path):
         return None, None
 
 def calculate_background_consistency(img1_path, img2_path):
-    """Calculate Background Consistency metric"""
     try:
         img1 = Image.open(img1_path).convert('RGB')
         img2 = Image.open(img2_path).convert('RGB')
@@ -273,7 +234,6 @@ def calculate_background_consistency(img1_path, img2_path):
         return None
 
 def get_inception_features(image_paths, batch_size=32):
-    """Extract Inception features for a list of images"""
     features = []
     
     transform = transforms.Compose([
@@ -282,7 +242,6 @@ def get_inception_features(image_paths, batch_size=32):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
     
-    # Create progress bar for feature extraction
     num_batches = (len(image_paths) + batch_size - 1) // batch_size
     pbar = tqdm(range(0, len(image_paths), batch_size), 
                 desc="Extracting features", 
@@ -321,16 +280,13 @@ def get_inception_features(image_paths, batch_size=32):
         return np.array([])
 
 def calculate_fid_for_task_offline(api_img_dir, input_img_dir, task_name):
-    """Calculate Fréchet Inception Distance between API images and input images for a specific task (OFFLINE setting)"""
     try:
-        # Get image paths for specific task
         api_paths = []
         input_paths = []
         
         for f in os.listdir(api_img_dir):
             if f.endswith('.png') and extract_task_from_filename(f) == task_name:
                 api_paths.append(os.path.join(api_img_dir, f))
-                # Find corresponding input image
                 input_path = os.path.join(input_img_dir, f)
                 if os.path.exists(input_path):
                     input_paths.append(input_path)
@@ -341,7 +297,6 @@ def calculate_fid_for_task_offline(api_img_dir, input_img_dir, task_name):
             
         print(f"Calculating OFFLINE FID for task '{task_name}' with {len(api_paths)} API images and {len(input_paths)} input images")
         
-        # Extract features
         api_features = get_inception_features(api_paths)
         input_features = get_inception_features(input_paths)
         
@@ -349,11 +304,9 @@ def calculate_fid_for_task_offline(api_img_dir, input_img_dir, task_name):
             print(f"No valid features extracted for FID calculation for task: {task_name}")
             return None
         
-        # Calculate means and covariances
         mu1, sigma1 = np.mean(api_features, axis=0), np.cov(api_features, rowvar=False)
         mu2, sigma2 = np.mean(input_features, axis=0), np.cov(input_features, rowvar=False)
         
-        # Calculate FID
         diff = mu1 - mu2
         covmean, _ = linalg.sqrtm(sigma1.dot(sigma2), disp=False)
         if not np.isfinite(covmean).all():
@@ -368,16 +321,13 @@ def calculate_fid_for_task_offline(api_img_dir, input_img_dir, task_name):
         return None
 
 def calculate_fid_for_task_online(gt_img_dir, input_img_dir, task_name):
-    """Calculate Fréchet Inception Distance between GT images and input images for a specific task (ONLINE setting)"""
     try:
-        # Get image paths for specific task
         gt_paths = []
         input_paths = []
         
         for f in os.listdir(gt_img_dir):
             if f.endswith('.png') and extract_task_from_filename(f) == task_name:
                 gt_paths.append(os.path.join(gt_img_dir, f))
-                # Find corresponding input image
                 input_path = os.path.join(input_img_dir, f)
                 if os.path.exists(input_path):
                     input_paths.append(input_path)
@@ -388,7 +338,6 @@ def calculate_fid_for_task_online(gt_img_dir, input_img_dir, task_name):
             
         print(f"Calculating ONLINE FID for task '{task_name}' with {len(gt_paths)} GT images and {len(input_paths)} input images")
         
-        # Extract features
         gt_features = get_inception_features(gt_paths)
         input_features = get_inception_features(input_paths)
         
@@ -396,11 +345,9 @@ def calculate_fid_for_task_online(gt_img_dir, input_img_dir, task_name):
             print(f"No valid features extracted for FID calculation for task: {task_name}")
             return None
         
-        # Calculate means and covariances
         mu1, sigma1 = np.mean(gt_features, axis=0), np.cov(gt_features, rowvar=False)
         mu2, sigma2 = np.mean(input_features, axis=0), np.cov(input_features, rowvar=False)
         
-        # Calculate FID
         diff = mu1 - mu2
         covmean, _ = linalg.sqrtm(sigma1.dot(sigma2), disp=False)
         if not np.isfinite(covmean).all():
@@ -415,15 +362,12 @@ def calculate_fid_for_task_online(gt_img_dir, input_img_dir, task_name):
         return None
 
 def calculate_fid(api_img_dir, input_img_dir):
-    """Calculate Fréchet Inception Distance between API images and input images (legacy function for backward compatibility)"""
     try:
-        # Get all image paths
         api_paths = [os.path.join(api_img_dir, f) for f in os.listdir(api_img_dir) if f.endswith('.png')]
         input_paths = [os.path.join(input_img_dir, f) for f in os.listdir(input_img_dir) if f.endswith('.png')]
         
         print(f"Calculating FID with {len(api_paths)} API images and {len(input_paths)} input images")
         
-        # Extract features
         api_features = get_inception_features(api_paths)
         input_features = get_inception_features(input_paths)
         
@@ -431,11 +375,9 @@ def calculate_fid(api_img_dir, input_img_dir):
             print("No valid features extracted for FID calculation")
             return None
         
-        # Calculate means and covariances
         mu1, sigma1 = np.mean(api_features, axis=0), np.cov(api_features, rowvar=False)
         mu2, sigma2 = np.mean(input_features, axis=0), np.cov(input_features, rowvar=False)
         
-        # Calculate FID
         diff = mu1 - mu2
         covmean, _ = linalg.sqrtm(sigma1.dot(sigma2), disp=False)
         if not np.isfinite(covmean).all():
@@ -450,9 +392,7 @@ def calculate_fid(api_img_dir, input_img_dir):
         return None
 
 def calculate_inception_score_for_task_offline(api_img_dir, task_name):
-    """Calculate Inception Score for API images of a specific task (OFFLINE setting)"""
     try:
-        # Get API image paths for specific task
         api_paths = []
         for f in os.listdir(api_img_dir):
             if f.endswith('.png') and extract_task_from_filename(f) == task_name:
@@ -464,14 +404,12 @@ def calculate_inception_score_for_task_offline(api_img_dir, task_name):
             
         print(f"Calculating OFFLINE IS for task '{task_name}' with {len(api_paths)} API images")
         
-        # Extract features
         features = get_inception_features(api_paths)
         
         if len(features) == 0:
             print(f"No valid features extracted for IS calculation for task: {task_name}")
             return None
         
-        # Calculate softmax probabilities using the full Inception model
         transform = transforms.Compose([
             transforms.Resize((299, 299)),
             transforms.ToTensor(),
@@ -479,7 +417,6 @@ def calculate_inception_score_for_task_offline(api_img_dir, task_name):
         ])
         
         probs = []
-        # Create progress bar for probability calculation
         prob_pbar = tqdm(api_paths, desc="Calculating OFFLINE probabilities", unit="image", leave=False)
         
         for path in prob_pbar:
@@ -507,7 +444,6 @@ def calculate_inception_score_for_task_offline(api_img_dir, task_name):
         
         probs = np.concatenate(probs, axis=0)
         
-        # Calculate Inception Score
         py = np.mean(probs, axis=0)
         scores = []
         for i in range(probs.shape[0]):
@@ -521,9 +457,7 @@ def calculate_inception_score_for_task_offline(api_img_dir, task_name):
         return None
 
 def calculate_inception_score_for_task_online(gt_img_dir, task_name):
-    """Calculate Inception Score for GT images of a specific task (ONLINE setting)"""
     try:
-        # Get GT image paths for specific task
         gt_paths = []
         for f in os.listdir(gt_img_dir):
             if f.endswith('.png') and extract_task_from_filename(f) == task_name:
@@ -535,14 +469,12 @@ def calculate_inception_score_for_task_online(gt_img_dir, task_name):
             
         print(f"Calculating ONLINE IS for task '{task_name}' with {len(gt_paths)} GT images")
         
-        # Extract features
         features = get_inception_features(gt_paths)
         
         if len(features) == 0:
             print(f"No valid features extracted for IS calculation for task: {task_name}")
             return None
         
-        # Calculate softmax probabilities using the full Inception model
         transform = transforms.Compose([
             transforms.Resize((299, 299)),
             transforms.ToTensor(),
@@ -550,7 +482,6 @@ def calculate_inception_score_for_task_online(gt_img_dir, task_name):
         ])
         
         probs = []
-        # Create progress bar for probability calculation
         prob_pbar = tqdm(gt_paths, desc="Calculating ONLINE probabilities", unit="image", leave=False)
         
         for path in prob_pbar:
@@ -578,7 +509,6 @@ def calculate_inception_score_for_task_online(gt_img_dir, task_name):
         
         probs = np.concatenate(probs, axis=0)
         
-        # Calculate Inception Score
         py = np.mean(probs, axis=0)
         scores = []
         for i in range(probs.shape[0]):
@@ -592,21 +522,17 @@ def calculate_inception_score_for_task_online(gt_img_dir, task_name):
         return None
 
 def calculate_inception_score(api_img_dir):
-    """Calculate Inception Score for API images (legacy function for backward compatibility)"""
     try:
-        # Get all API image paths
         api_paths = [os.path.join(api_img_dir, f) for f in os.listdir(api_img_dir) if f.endswith('.png')]
         
         print(f"Calculating IS with {len(api_paths)} API images")
         
-        # Extract features
         features = get_inception_features(api_paths)
         
         if len(features) == 0:
             print("No valid features extracted for IS calculation")
             return None
         
-        # Calculate softmax probabilities using the full Inception model
         transform = transforms.Compose([
             transforms.Resize((299, 299)),
             transforms.ToTensor(),
@@ -635,7 +561,6 @@ def calculate_inception_score(api_img_dir):
         
         probs = np.concatenate(probs, axis=0)
         
-        # Calculate Inception Score
         py = np.mean(probs, axis=0)
         scores = []
         for i in range(probs.shape[0]):
@@ -649,32 +574,24 @@ def calculate_inception_score(api_img_dir):
         return None
 
 def get_instruction_from_file(instruction_path):
-    """Read instruction from text file"""
     with open(instruction_path, 'r', encoding='utf-8') as f:
         return f.read().strip()
 
 def extract_task_from_filename(filename):
-    """Extract task name from filename
-    Format: HumanEdit_{task}_{number}_{id}.png
-    """
     try:
-        # Remove .png extension
         base_name = filename.replace('.png', '')
-        # Split by underscore and get the second part (task)
         parts = base_name.split('_')
         if len(parts) >= 2:
-            return parts[1]  # Return task name (e.g., "Action", "Add", etc.)
+            return parts[1]
         else:
             return "Unknown"
     except:
         return "Unknown"
 
 def get_all_api_images():
-    """Get all images from api_img directory"""
     return [f for f in os.listdir(API_IMG_DIR) if f.endswith('.png')]
 
 def get_all_tasks():
-    """Get all unique task names from api_img directory"""
     tasks = set()
     for f in os.listdir(API_IMG_DIR):
         if f.endswith('.png'):
@@ -684,24 +601,20 @@ def get_all_tasks():
     return sorted(list(tasks))
 
 def process_single_evaluation(api_image_name):
-    """Process a single image evaluation"""
     base_name = api_image_name.replace('.png', '')
     
-    # Define paths
     ground_truth_path = os.path.join(GT_IMG_DIR, api_image_name)
     api_path = os.path.join(API_IMG_DIR, api_image_name)
     input_path = os.path.join(INPUT_IMG_DIR, api_image_name)
     mask_path = os.path.join(MASK_IMG_DIR, api_image_name)
     instruction_path = os.path.join(INSTRUCTIONS_DIR, f"{base_name}.txt")
     
-    # Check if all required files exist
     required_files = [ground_truth_path, api_path, input_path, instruction_path, mask_path]
     for file_path in required_files:
         if not os.path.exists(file_path):
             print(f"Missing file: {file_path}")
             return None
     
-    # Read instruction
     instruction = get_instruction_from_file(instruction_path)
     
     print(f"Processing evaluation for: {base_name}")
@@ -709,17 +622,14 @@ def process_single_evaluation(api_image_name):
     
     results = []
     
-    # OFFLINE SETTING: Calculate Pixel-level Fidelity metrics (API vs GT)
     print("Calculating OFFLINE Pixel-level Fidelity metrics (API vs GT)...")
     l1_error_offline, l2_error_offline = calculate_l1_l2_metrics(api_path, ground_truth_path)
     psnr_value_offline, ssim_value_offline, lpips_value_offline = calculate_psnr_ssim_lpips(api_path, ground_truth_path)
     
-    # OFFLINE SETTING: Calculate Content Preservation metrics (API vs GT + mask)
     print("Calculating OFFLINE Content Preservation metrics...")
     mask_ssim_value_offline, mask_lpips_value_offline = calculate_mask_ssim_lpips(api_path, ground_truth_path, mask_path)
     background_consistency_offline = calculate_background_consistency(api_path, ground_truth_path)
     
-    # Create OFFLINE result dictionary
     offline_result = {
         "image_id": base_name,
         "instruction": instruction,
@@ -739,17 +649,14 @@ def process_single_evaluation(api_image_name):
     }
     results.append(offline_result)
     
-    # ONLINE SETTING: Calculate Pixel-level Fidelity metrics (Input vs API)
     print("Calculating ONLINE Pixel-level Fidelity metrics (Input vs API)...")
     l1_error_online, l2_error_online = calculate_l1_l2_metrics(input_path, api_path)
     psnr_value_online, ssim_value_online, lpips_value_online = calculate_psnr_ssim_lpips(input_path, api_path)
     
-    # ONLINE SETTING: Calculate Content Preservation metrics (Input vs API + mask)
     print("Calculating ONLINE Content Preservation metrics...")
     mask_ssim_value_online, mask_lpips_value_online = calculate_mask_ssim_lpips(input_path, api_path, mask_path)
     background_consistency_online = calculate_background_consistency(input_path, api_path)
     
-    # Create ONLINE result dictionary
     online_result = {
         "image_id": base_name,
         "instruction": instruction,
@@ -797,10 +704,9 @@ def process_single_evaluation(api_image_name):
     return results
 
 def save_to_jsonl(evaluations, output_path, mode='a'):
-    """Save evaluations to JSONL format with append mode (thread-safe)"""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
-    with file_lock:  # Thread-safe file writing
+    with file_lock:
         with open(output_path, mode, encoding='utf-8') as f:
             for evaluation in evaluations:
                 if evaluation is not None:
@@ -812,10 +718,8 @@ def save_to_jsonl(evaluations, output_path, mode='a'):
         print(f"Results saved to: {output_path}")
 
 def process_single_evaluation_threaded(api_image_name, processed_ids):
-    """Thread-safe wrapper for process_single_evaluation"""
     base_name = api_image_name.replace('.png', '')
     
-    # Skip if already processed
     if base_name in processed_ids:
         return None, f"Skipped: {api_image_name} (already processed)"
     
@@ -823,7 +727,6 @@ def process_single_evaluation_threaded(api_image_name, processed_ids):
         evaluation_results = process_single_evaluation(api_image_name)
         
         if evaluation_results is not None:
-            # Save immediately after each successful evaluation (thread-safe)
             save_to_jsonl(evaluation_results, OUTPUT_JSONL_PATH)
             return evaluation_results, f"Saved: {api_image_name}"
         else:
@@ -832,14 +735,11 @@ def process_single_evaluation_threaded(api_image_name, processed_ids):
         return None, f"Error processing {api_image_name}: {str(e)}"
 
 def main():
-    """Main function to process all evaluations"""
     print("Starting traditional evaluation process...")
     
-    # Get all API images
     api_images = get_all_api_images()
     print(f"Found {len(api_images)} API images to evaluate")
     
-    # Load existing results to avoid reprocessing
     processed_ids = set()
     if os.path.exists(OUTPUT_JSONL_PATH):
         with open(OUTPUT_JSONL_PATH, 'r', encoding='utf-8') as f:
@@ -855,7 +755,6 @@ def main():
     evaluations = []
     skipped = 0
     
-    # Filter out already processed images
     images_to_process = []
     for api_image in api_images:
         base_name = api_image.replace('.png', '')
@@ -866,18 +765,14 @@ def main():
     
     print(f"Processing {len(images_to_process)} images with {MAX_WORKERS} threads...")
     
-    # Use ThreadPoolExecutor for parallel processing
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        # Submit all tasks
         future_to_image = {
             executor.submit(process_single_evaluation_threaded, api_image, processed_ids): api_image 
             for api_image in images_to_process
         }
         
-        # Create progress bar for parallel processing
         pbar = tqdm(total=len(images_to_process), desc="Processing images", unit="image")
         
-        # Process completed tasks
         for future in as_completed(future_to_image):
             api_image = future_to_image[future]
             try:
@@ -897,34 +792,25 @@ def main():
         
         pbar.close()
     
-    # Calculate Perceptual Quality metrics (per-task metrics)
     print("\n" + "="*80)
     print("Calculating Perceptual Quality metrics per task...")
     print("="*80)
     
-    # Get all unique tasks
     all_tasks = get_all_tasks()
     print(f"Found tasks: {all_tasks}")
     
-    # Calculate metrics for each task using parallel processing
     task_metrics = []
     
     def calculate_task_metrics(task):
-        """Calculate metrics for a single task"""
         try:
-            # Calculate OFFLINE FID for this task (API vs Input)
             fid_offline_value = calculate_fid_for_task_offline(API_IMG_DIR, INPUT_IMG_DIR, task)
             
-            # Calculate ONLINE FID for this task (API vs Input)
             fid_online_value = calculate_fid_for_task_offline(API_IMG_DIR, INPUT_IMG_DIR, task)
             
-            # Calculate OFFLINE IS for this task (API images)
             is_offline_value = calculate_inception_score_for_task_offline(API_IMG_DIR, task)
             
-            # Calculate ONLINE IS for this task (API images)
             is_online_value = calculate_inception_score_for_task_offline(API_IMG_DIR, task)
             
-            # Create OFFLINE task metrics result
             task_metric_offline = {
                 "image_id": f"task_metrics_{task}_offline",
                 "instruction": f"Perceptual quality metrics for task: {task} (OFFLINE setting)",
@@ -936,7 +822,6 @@ def main():
                 }
             }
             
-            # Create ONLINE task metrics result
             task_metric_online = {
                 "image_id": f"task_metrics_{task}_online",
                 "instruction": f"Perceptual quality metrics for task: {task} (ONLINE setting)",
@@ -948,7 +833,6 @@ def main():
                 }
             }
             
-            # Save task metrics immediately (thread-safe)
             save_to_jsonl([task_metric_offline, task_metric_online], OUTPUT_JSONL_PATH)
             
             return [task_metric_offline, task_metric_online], f"Saved: {task} (FID: {fid_offline_value:.2f}/{fid_online_value:.2f}, IS: {is_offline_value:.2f}/{is_online_value:.2f})"
@@ -956,18 +840,14 @@ def main():
         except Exception as e:
             return None, f"Error processing {task}: {str(e)}"
     
-    # Use ThreadPoolExecutor for parallel task processing
     with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, len(all_tasks))) as executor:
-        # Submit all task calculations
         future_to_task = {
             executor.submit(calculate_task_metrics, task): task 
             for task in all_tasks
         }
         
-        # Create progress bar for task processing
         task_pbar = tqdm(total=len(all_tasks), desc="Calculating task metrics", unit="task")
         
-        # Process completed tasks
         for future in as_completed(future_to_task):
             task = future_to_task[future]
             try:
@@ -987,7 +867,6 @@ def main():
         
         task_pbar.close()
     
-    # Print summary
     successful = sum(1 for e in evaluations if e is not None)
     offline_count = sum(1 for e in evaluations if e is not None and e.get('setting') == 'offline')
     online_count = sum(1 for e in evaluations if e is not None and e.get('setting') == 'online')
@@ -1010,7 +889,6 @@ def main():
         print(f"  {task} ({setting}): FID={fid}, IS={is_score}")
     print(f"Results saved to: {OUTPUT_JSONL_PATH}")
     
-    # Performance statistics
     end_time = time.time()
     total_time = end_time - start_time
     print(f"\n=== Performance Statistics ===")

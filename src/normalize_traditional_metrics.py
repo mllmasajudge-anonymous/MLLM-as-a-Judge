@@ -3,9 +3,8 @@ import os
 from typing import Dict, Any, List, Tuple
 import re
 
-# Get the directory of this script and construct relative paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # Go up one level from src/ to pipeline/
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
 INPUT_PATH = os.path.join(PROJECT_ROOT, "results", "traditional_evaluations.jsonl")
 OUTPUT_PATH = os.path.join(PROJECT_ROOT, "results", "normalized_traditional_evaluations.jsonl")
@@ -23,19 +22,14 @@ def read_jsonl(path: str) -> List[Dict[str, Any]]:
 
 
 def extract_task_from_image_id(image_id: str) -> str:
-    """Extract task from image_id like 'HumanEdit_Remove_167_3cwvFD-YPtk' -> 'Remove'"""
     if image_id.startswith("HumanEdit_"):
         parts = image_id.split("_")
         if len(parts) >= 2:
-            return parts[1]  # Return the task name (e.g., "Remove", "Replace", etc.)
+            return parts[1]
     return "Unknown"
 
 
 def collect_metric_ranges_by_group(entries: List[Dict[str, Any]]) -> Dict[str, Dict[str, Dict[str, Tuple[float, float]]]]:
-    """
-    Collect metric ranges grouped by (setting, task) combination.
-    Returns: {(setting, task): {category: {metric: (min, max)}}}
-    """
     ranges: Dict[str, Dict[str, Dict[str, Tuple[float, float]]]] = {}
     categories = ["pixel_level_fidelity", "content_preservation"]
 
@@ -77,16 +71,12 @@ def collect_metric_ranges_by_group(entries: List[Dict[str, Any]]) -> Dict[str, D
 
 
 def normalize_entries_by_group(entries: List[Dict[str, Any]], ranges: Dict[str, Dict[str, Dict[str, Tuple[float, float]]]]) -> List[Dict[str, Any]]:
-    """
-    Normalize entries using group-specific ranges.
-    """
     normalized: List[Dict[str, Any]] = []
     categories = ["pixel_level_fidelity", "content_preservation"]
 
     for entry in entries:
         image_id = entry.get("image_id", "")
         if image_id.startswith("task_metrics"):
-            # Keep task metrics unchanged
             normalized.append(entry)
             continue
 
@@ -106,7 +96,6 @@ def normalize_entries_by_group(entries: List[Dict[str, Any]], ranges: Dict[str, 
                     new_cat[metric] = value
                     continue
                 
-                # Get the range for this specific group
                 group_ranges = ranges.get(group_key, {})
                 cat_ranges = group_ranges.get(cat, {})
                 min_val, max_val = cat_ranges.get(metric, (value, value))

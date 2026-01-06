@@ -11,13 +11,12 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 
-# Robust __file__ handling (works if run as script or in notebooks)
 try:
     SCRIPT_DIR = ""
 except NameError:
     SCRIPT_DIR = os.getcwd()
 
-PROJECT_ROOT = SCRIPT_DIR  # adjusted for this environment; repo root == current dir
+PROJECT_ROOT = SCRIPT_DIR
 
 HUMANEDIT_DIR = os.path.join(PROJECT_ROOT, "HumanEdit")
 API_IMG_DIR = os.path.join(HUMANEDIT_DIR, "api_img")
@@ -64,10 +63,6 @@ def cosine_sim(a: torch.Tensor, b: torch.Tensor) -> float:
 
 
 def extract_task_from_filename(filename: str) -> str:
-    """
-    Matches your traditional_evaluation.py:
-    Format: HumanEdit_{task}_{number}_{id}.png  -> returns {task}
-    """
     try:
         base = filename.replace(".png", "")
         parts = base.split("_")
@@ -203,7 +198,6 @@ def compute_scores_for_image(fname: str, clip: CLIPWrapper, dino: DINOv2Wrapper)
         "model_meta": {},
     }
 
-    # CLIP
     if clip.loaded and img_api is not None:
         img_api_emb = clip.encode_image(img_api)
         if img_api_emb is not None:
@@ -219,7 +213,6 @@ def compute_scores_for_image(fname: str, clip: CLIPWrapper, dino: DINOv2Wrapper)
     else:
         out["model_meta"]["clip"] = "unavailable"
 
-    # DINO
     if dino.loaded and img_api is not None and img_ref is not None:
         out["model_meta"]["dino"] = dino.kind
         api_emb = dino.encode_image(img_api)

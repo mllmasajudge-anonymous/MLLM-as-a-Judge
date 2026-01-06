@@ -2,9 +2,8 @@ import json
 import os
 from typing import Dict, Any, List, Tuple
 
-# Get the directory of this script and construct relative paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # Go up one level from src/ to pipeline/
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
 INPUT_PATH = os.path.join(PROJECT_ROOT, "results", "judge_evaluations_all_v3_gemini.jsonl")
 OUTPUT_PATH = os.path.join(PROJECT_ROOT, "results", "normalized_judge_evaluations_all_v3_gemini.jsonl")
@@ -22,7 +21,6 @@ def read_jsonl(path: str) -> List[Dict[str, Any]]:
 
 
 def get_task_from_image_id(image_id: str) -> str:
-    """Extract task type from image_id (e.g., 'HumanEdit_Remove_167_3cwvFD-YPtk' -> 'HumanEdit_Remove')"""
     parts = image_id.split('_')
     if len(parts) >= 2:
         return f"{parts[0]}_{parts[1]}"
@@ -30,10 +28,6 @@ def get_task_from_image_id(image_id: str) -> str:
 
 
 def collect_score_ranges(entries: List[Dict[str, Any]]) -> Dict[str, Dict[str, Dict[str, Tuple[float, float]]]]:
-    """
-    Collect score ranges for each task and each setting (offline/online).
-    Returns: {task: {setting: {factor: (min, max)}}}
-    """
     ranges: Dict[str, Dict[str, Dict[str, Tuple[float, float]]]] = {}
     settings = ["offline_factor_results", "online_factor_results"]
 
@@ -74,10 +68,6 @@ def collect_score_ranges(entries: List[Dict[str, Any]]) -> Dict[str, Dict[str, D
 
 
 def normalize_entries(entries: List[Dict[str, Any]], ranges: Dict[str, Dict[str, Dict[str, Tuple[float, float]]]]) -> List[Dict[str, Any]]:
-    """
-    Normalize entries using task-specific ranges for each setting.
-    ranges: {task: {setting: {factor: (min, max)}}}
-    """
     normalized: List[Dict[str, Any]] = []
     settings = ["offline_factor_results", "online_factor_results"]
 
@@ -103,18 +93,15 @@ def normalize_entries(entries: List[Dict[str, Any]], ranges: Dict[str, Dict[str,
                     new_setting[factor] = factor_data
                     continue
                 
-                # Get task-specific range for this factor in this setting
                 task_ranges = ranges.get(task, {})
                 setting_ranges = task_ranges.get(setting, {})
                 min_val, max_val = setting_ranges.get(factor, (score, score))
                 
-                # Normalize the score using task-specific range
                 if max_val > min_val:
                     norm_score = (score - min_val) / (max_val - min_val)
                 else:
                     norm_score = 0.0
                 
-                # Create new factor data with normalized score
                 new_factor_data = dict(factor_data)
                 new_factor_data["score"] = float(norm_score)
                 new_setting[factor] = new_factor_data

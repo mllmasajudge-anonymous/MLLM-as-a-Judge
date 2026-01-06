@@ -1,9 +1,7 @@
-# Resolve project root (one directory up from this file's directory)
 import os
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)  # Go up one level from src/ to pipeline/
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
-# Fixed output path for JSONL results (relative to new PROJECT_ROOT)
 OUTPUT_JSONL_PATH = os.path.join(PROJECT_ROOT, "results", "judge_evaluations.jsonl")
 
 import json
@@ -14,17 +12,14 @@ import signal
 from PIL import Image
 from io import BytesIO
 
-# Azure OpenAI setup
 endpoint = os.getenv("AZURE_OPENAI_ENDPOINT", "")
 deployment = os.getenv("DEPLOYMENT_NAME", "gpt-5-mini-2025-08-07")
 api_version = os.getenv("OPENAI_API_VERSION", "2025-04-01-preview")
 
-# Load API key from credentials file (relative to new PROJECT_ROOT)
 with open(os.path.join(PROJECT_ROOT, "credentials", "gpt_5_mini_api_key.json"), "r") as f:
     api_key_data = json.load(f)
     api_key = api_key_data["api_key"]
 
-# Load judge prompts (relative to new PROJECT_ROOT)
 with open(os.path.join(PROJECT_ROOT, "prompts", "v3_judge_offline_all_factors.txt"), "r", encoding='utf-8') as f:
     offline_judge_prompt = f.read()
 
@@ -32,26 +27,19 @@ with open(os.path.join(PROJECT_ROOT, "prompts", "v3_judge_online_all_factors.txt
     online_judge_prompt = f.read()
 
 class TimeoutError(Exception):
-    """Custom timeout exception"""
     pass
 
 def timeout_handler(signum, frame):
-    """Signal handler for timeout"""
     raise TimeoutError("Processing timeout exceeded")
 
 def encode_image_to_base64(image_path, max_size=(512, 512), quality=85):
-    """Encode image to base64 string with compression to reduce token usage"""
     try:
-        # Open and resize image to reduce token consumption
         with Image.open(image_path) as img:
-            # Convert to RGB if necessary
             if img.mode in ('RGBA', 'LA', 'P'):
                 img = img.convert('RGB')
             
-            # Resize image to reduce size
             img.thumbnail(max_size, Image.Resampling.LANCZOS)
             
-            # Save to bytes with compression
             buffer = BytesIO()
             img.save(buffer, format='JPEG', quality=quality, optimize=True)
             buffer.seek(0)
@@ -59,20 +47,16 @@ def encode_image_to_base64(image_path, max_size=(512, 512), quality=85):
             return base64.b64encode(buffer.getvalue()).decode('utf-8')
     except Exception as e:
         print(f"Error processing image {image_path}: {e}")
-        # Fallback to original method
         with open(image_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode('utf-8')
 
 def get_instruction_from_file(instruction_path):
-    """Read instruction from text file"""
     with open(instruction_path, 'r', encoding='utf-8') as f:
         return f.read().strip()
 
 def test_model_capabilities():
-    """Test if the model supports image processing"""
     print("Testing model capabilities...")
     
-    # Simple text-only test
     test_messages = [
         {
             "role": "user",
@@ -114,21 +98,15 @@ def test_model_capabilities():
         return False
 
 def call_azure_openai_with_images(image1_path, image2_path, instruction, base_name, prompt_template, image1_placeholder, image2_placeholder, max_retries=3):
-    """Call Azure OpenAI with the three required inputs and smart retry mechanism"""
     
-    # Encode images to base64
     image1_b64 = encode_image_to_base64(image1_path)
     image2_b64 = encode_image_to_base64(image2_path)
     
-    # Build request URL for chat completions
     base_path = f'deployments/{deployment}/chat/completions'
     params = f'?api-version={api_version}'
     generation_url = f"{endpoint}/{base_path}{params}"
     
-    # Prepare the messages for chat completions format
-    # Replace all placeholders in the prompt
     complete_prompt = prompt_template.replace("[text instruction]", instruction)
-    # Remove image placeholders since images are passed as separate image_url objects
     complete_prompt = complete_prompt.replace(image1_placeholder, "")
     complete_prompt = complete_prompt.replace(image2_placeholder, "")
 
@@ -175,7 +153,6 @@ def call_azure_openai_with_images(image1_path, image2_path, instruction, base_na
                 print(f"API Response Status: {response.status_code}")
                 print(f"Response Data Keys: {list(response_data.keys())}")
                 
-                # Check if response has the expected structure
                 if "choices" not in response_data:
                     print(f"No 'choices' in response: {response_data}")
                     return None
@@ -202,7 +179,6 @@ def call_azure_openai_with_images(image1_path, image2_path, instruction, base_na
                     print(f"Full response data: {response_data}")
                     return None
                 
-                # Print the model output to terminal
                 print("\n" + "="*80)
                 print("MODEL OUTPUT:")
                 print("="*80)
@@ -211,8 +187,7 @@ def call_azure_openai_with_images(image1_path, image2_path, instruction, base_na
                 
                 return model_output
             elif response.status_code == 429:
-                # Rate limit exceeded, wait and retry
-                wait_time = 60 * (attempt + 1)  # Exponential backoff
+                wait_time = 60 * (attempt + 1)
                 print(f"Rate limit exceeded. Waiting {wait_time} seconds before retry {attempt + 1}/{max_retries}")
                 time.sleep(wait_time)
                 continue
@@ -220,18 +195,17 @@ def call_azure_openai_with_images(image1_path, image2_path, instruction, base_na
                 print(f"Error calling Azure OpenAI: {response.status_code} - {response.text}")
                 if attempt == max_retries - 1:
                     return None
-                time.sleep(5)  # Wait 5 seconds before retry
+                time.sleep(5)
                 
         except Exception as e:
             print(f"Exception calling Azure OpenAI: {str(e)}")
             if attempt == max_retries - 1:
                 return None
-            time.sleep(5)  # Wait 5 seconds before retry
+            time.sleep(5)
     
     return None
 
 def extract_json_from_response(response_text):
-    """Extract JSON from the response text with improved logic"""
     try:
         print("\n" + "-"*60)
         print("JSON EXTRACTION PROCESS:")
@@ -239,7 +213,6 @@ def extract_json_from_response(response_text):
         print(f"Raw response length: {len(response_text)} characters")
         print(f"Raw response preview: {response_text[:300]}...")
         
-        # Method 1: Try to find JSON block in the response
         start_idx = response_text.find('{')
         end_idx = response_text.rfind('}') + 1
         
@@ -256,7 +229,6 @@ def extract_json_from_response(response_text):
                 return parsed_json
             except json.JSONDecodeError as e:
                 print(f"JSON decode error: {e}")
-                # Try to fix common JSON issues
                 json_str = json_str.replace('\n', ' ').replace('\r', ' ')
                 print("Trying to fix JSON by removing newlines...")
                 try:
@@ -270,7 +242,6 @@ def extract_json_from_response(response_text):
                     print("-"*60 + "\n")
                     return None
         
-        # Method 2: Try to find JSON in code blocks
         if '```json' in response_text:
             print("Trying Method 2: Looking for JSON in ```json code blocks...")
             start_marker = response_text.find('```json') + 7
@@ -288,7 +259,6 @@ def extract_json_from_response(response_text):
                 except json.JSONDecodeError as e:
                     print(f"JSON decode error from code block: {e}")
         
-        # Method 3: Try to find JSON in code blocks without language specifier
         if '```' in response_text:
             print("Trying Method 3: Looking for JSON in ``` code blocks...")
             start_marker = response_text.find('```') + 3
@@ -321,28 +291,23 @@ def extract_json_from_response(response_text):
         return None
 
 def get_all_api_images():
-    """Get all images from api_img_400 directory"""
     api_img_dir = os.path.join(PROJECT_ROOT, "HumanEdit", "api_img_400")
     return [f for f in os.listdir(api_img_dir) if f.endswith('.png')]
 
 def process_single_evaluation(api_image_name, timeout_seconds=300):
-    """Process a single image evaluation with timeout control for both offline and online settings"""
     base_name = api_image_name.replace('.png', '')
     
-    # Define paths for all required files
     ground_truth_path = os.path.join(PROJECT_ROOT, "HumanEdit", "gt_img_400", api_image_name)
     edited_path = os.path.join(PROJECT_ROOT, "HumanEdit", "api_img_400", api_image_name)
     input_path = os.path.join(PROJECT_ROOT, "HumanEdit", "input_img_400", api_image_name)
     instruction_path = os.path.join(PROJECT_ROOT, "HumanEdit", "instructions_400", f"{base_name}.txt")
     
-    # Check if all required files exist
     required_files = [ground_truth_path, edited_path, input_path, instruction_path]
     for file_path in required_files:
         if not os.path.exists(file_path):
             print(f"Missing file: {file_path}")
             return None
     
-    # Read instruction
     instruction = get_instruction_from_file(instruction_path)
     
     print(f"Processing evaluation for: {base_name}")
@@ -352,12 +317,10 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
     print(f"EVALUATING: {base_name}")
     print("="*80)
     
-    # Set up timeout signal
     old_handler = signal.signal(signal.SIGALRM, timeout_handler)
     signal.alarm(timeout_seconds)
     
     try:
-        # Process offline setting
         print("Processing OFFLINE setting...")
         offline_response = call_azure_openai_with_images(
             ground_truth_path, 
@@ -374,7 +337,6 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
             print("="*80 + "\n")
             return None
         
-        # Extract JSON from offline response
         print(f"Extracting JSON from offline response for {base_name}...")
         offline_result = extract_json_from_response(offline_response)
         
@@ -385,7 +347,6 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
         
         print(f"Successfully parsed offline JSON for {base_name}")
         
-        # Process online setting
         print("Processing ONLINE setting...")
         online_response = call_azure_openai_with_images(
             input_path, 
@@ -402,7 +363,6 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
             print("="*80 + "\n")
             return None
         
-        # Extract JSON from online response
         print(f"Extracting JSON from online response for {base_name}...")
         online_result = extract_json_from_response(online_response)
         
@@ -413,7 +373,6 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
         
         print(f"Successfully parsed online JSON for {base_name}")
         
-        # Merge results
         merged_result = {
             "image_id": base_name,
             "offline_factor_results": offline_result.get("offline_factor_results", {}),
@@ -435,12 +394,10 @@ def process_single_evaluation(api_image_name, timeout_seconds=300):
         print("="*80 + "\n")
         return None
     finally:
-        # Restore the original signal handler and cancel alarm
         signal.alarm(0)
         signal.signal(signal.SIGALRM, old_handler)
 
 def save_to_jsonl(evaluations, output_path, mode='a'):
-    """Save evaluations to JSONL format with append mode"""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, mode, encoding='utf-8') as f:
@@ -454,19 +411,15 @@ def save_to_jsonl(evaluations, output_path, mode='a'):
         print(f"Results saved to: {output_path}")
 
 def main():
-    """Main function to process all evaluations with real-time saving for both offline and online settings"""
     print("Starting judge evaluation process for both OFFLINE and ONLINE settings...")
     
-    # Test model capabilities first
     if not test_model_capabilities():
         print("Model test failed. Please check your model configuration.")
         return
     
-    # Get all API images
     api_images = get_all_api_images()
     print(f"Found {len(api_images)} API images to evaluate")
     
-    # Load existing results to avoid reprocessing
     processed_ids = set()
     if os.path.exists(OUTPUT_JSONL_PATH):
         with open(OUTPUT_JSONL_PATH, 'r', encoding='utf-8') as f:
@@ -486,7 +439,6 @@ def main():
     for i, api_image in enumerate(api_images):
         base_name = api_image.replace('.png', '')
         
-        # Skip if already processed
         if base_name in processed_ids:
             print(f"\nSkipping {i+1}/{len(api_images)}: {api_image} (already processed)")
             skipped += 1
@@ -505,23 +457,19 @@ def main():
         if evaluation is not None:
             print(f"Successfully evaluated {api_image} (took {processing_time:.1f}s)")
             print(f"Results include both offline and online factor results")
-            # Save immediately after each successful evaluation
             save_to_jsonl([evaluation], OUTPUT_JSONL_PATH)
             print(f"Results saved to: {OUTPUT_JSONL_PATH}")
         else:
-            # Check if it was a timeout (processing time close to 5 minutes)
-            if processing_time >= 290:  # Close to 5 minutes (300 seconds)
+            if processing_time >= 290:
                 timeout_count += 1
                 print(f"Timeout: {api_image} (took {processing_time:.1f}s)")
             else:
                 print(f"Failed to evaluate {api_image} (took {processing_time:.1f}s)")
         
-        # Add delay between requests to avoid rate limiting
-        if i < len(api_images) - 1:  # Don't wait after the last request
+        if i < len(api_images) - 1:
             print("Waiting 10 seconds before next request...")
             time.sleep(10)
     
-    # Print summary
     successful = sum(1 for e in evaluations if e is not None)
     failed = len(evaluations) - successful
     print(f"\n=== Evaluation Complete ===")
