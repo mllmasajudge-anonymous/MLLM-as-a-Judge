@@ -1,0 +1,206 @@
+[
+  {
+    "image_id": "Plausibility_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 3,
+        "justification": "Edited image raised the boy's hands but shows disconnected, severed arm segments with black gaps; Ground Truth shows continuous, correctly stretched arms."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Edited image leaves hollow gaps and missing forearm connections on both sides, whereas Ground Truth shows complete, uninterrupted stretched arms."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Edited image displays floating, severed forearms and dark cylindrical gaps, creating anatomically impossible limbs; Ground Truth maintains a realistic extended-arm pose."
+      }
+    }
+  },
+  {
+    "image_id": "Seamlessness_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 3,
+        "justification": "Edited Image extends arms but adds thick black outline and filled silhouette around both arms; Ground Truth shows natural stretched arms without black masking."
+      },
+      "completeness": {
+        "score": 5,
+        "justification": "Both images show both arms extended; Edited Image includes full arm shapes but overlays black mask, while Ground Truth shows complete natural limbs."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Edited Image has unrealistic thick black outline and solid-filled arms, creating cartoonish, anatomically inconsistent limbs; Ground Truth preserves realistic arm anatomy and shading."
+      }
+    }
+  },
+  {
+    "image_id": "Alignment_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 2,
+        "justification": "Ground Truth shows boy with both arms stretched outward; Edited Image leaves his arms relaxed at his sides, failing to perform the requested stretching."
+      },
+      "completeness": {
+        "score": 1,
+        "justification": "Ground Truth extends both hands fully; Edited Image omits any arm extension, leaving hands at sides and not addressing the instruction."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Both images show physically plausible poses: Ground Truth's extended arms and Edited Image's relaxed arms are anatomically natural and consistent with standing in the scene."
+      }
+    }
+  },
+  {
+    "image_id": "Texture_and_Detail_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 6,
+        "justification": "Edited shows a front-facing cartoon replacing the photographed rear-view boy; both have arms extended, but orientation and realism differ from Ground Truth."
+      },
+      "completeness": {
+        "score": 7,
+        "justification": "Both images show the boy's arms fully extended; Edited uses a cartoon character, but the instruction's sole action is completed equally."
+      },
+      "plausibility": {
+        "score": 3,
+        "justification": "Ground Truth's photographic pose is physically plausible; Edited's flat cartoon, simplified shading and outline clashes with scene lighting, reducing real-world plausibility."
+      }
+    }
+  },
+  {
+    "image_id": "Global_Consistency_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 4,
+        "justification": "Edited image raises the boy's arms but with bent elbows and palms angled; Ground Truth shows fully symmetric, more horizontally outstretched hands."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Edited image only partially extends arms; fingers and wrist angles are less visible, unlike Ground Truth's complete, fully outstretched symmetrical arm pose."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Edited image preserves realistic anatomy and natural shoulder/elbow placement, making the pose believable, comparable to Ground Truth's stylized but physically consistent stretch."
+      }
+    }
+  },
+  {
+    "image_id": "Color_and_Lighting_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 5,
+        "justification": "Edited Image matches Ground Truth's outward arm pose but introduces extreme neon recoloring and slight hand rotation absent in the Ground Truth."
+      },
+      "completeness": {
+        "score": 6,
+        "justification": "Both images display the boy with hands stretched outward and visible fingers; Edited Image doesn't omit the pose change present in Ground Truth."
+      },
+      "plausibility": {
+        "score": 3,
+        "justification": "Edited Image's neon rainbow coloring makes skin, clothing, and shadows unrealistic compared to Ground Truth's natural tones and plausible anatomy."
+      }
+    }
+  },
+  {
+    "image_id": "Spatial_Relationship_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 3,
+        "justification": "Edited image (left) keeps elbows bent with hands near shoulders, unlike Ground Truth (right) which shows both arms fully extended outward and hands open."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Edited image omits full extension: elbows remain bent and hands are not laterally stretched as in Ground Truth, lacking the complete outward arm posture."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Both images present anatomically plausible poses; Edited's bent elbows and hand positions remain realistic, so real-world plausibility matches the Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Unchanged_Regions_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 6,
+        "justification": "Edited Image extends both arms outward like Ground Truth, but fingers form a V-sign and background changed; target hands correctly identified and extended."
+      },
+      "completeness": {
+        "score": 6,
+        "justification": "Both images show both arms stretched outward; Edited also changed scene but did not omit extending either hand compared to Ground Truth."
+      },
+      "plausibility": {
+        "score": 2,
+        "justification": "Edited places the boy submerged standing on coral with dry clothing and hair, creating physical implausibility absent in Ground Truth's realistic desert pose."
+      }
+    }
+  },
+  {
+    "image_id": "Completeness_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 2,
+        "justification": "Ground Truth shows both arms symmetrically extended; Edited extends only the left arm while the right arm remains lowered, missing one target."
+      },
+      "completeness": {
+        "score": 2,
+        "justification": "Ground Truth stretches both hands outward; Edited stretches only the left hand, omitting the right-hand extension present in Ground Truth."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Both images show anatomically plausible arm positions; Edited's single extended left arm and lowered right arm appear natural with no visible anatomical errors."
+      }
+    }
+  },
+  {
+    "image_id": "Image_Quality_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 3,
+        "justification": "Edited Image shows arms angled upward and closer to body with less horizontal extension, whereas Ground Truth displays fully outstretched arms."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Edited Image omits full lateral arm extension and finger separation visible in Ground Truth; arms are shorter, blur obscures hand details, so instruction is partially executed."
+      },
+      "plausibility": {
+        "score": 5,
+        "justification": "Edited Image is noisy, color-shifted and slightly distorted at elbows, but the pose (arms raised) remains physically possible, though less natural than Ground Truth."
+      }
+    }
+  },
+  {
+    "image_id": "Scale_Realism_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 5,
+        "justification": "Edited Image shows the boy stretching his hands but relocated and reduced in scale compared to Ground Truth's close-up, so alignment is slightly worse."
+      },
+      "completeness": {
+        "score": 5,
+        "justification": "Edited Image applies the hands-out pose but reduces subject size and visible hand detail; Ground Truth presents a full close-up showing arms and hands completely."
+      },
+      "plausibility": {
+        "score": 6,
+        "justification": "Both images show anatomically plausible arm extension; Edited Image's distant, smaller figure still casts a consistent shadow and appears realistic."
+      }
+    }
+  },
+  {
+    "image_id": "Identity_Preservation_terrible.png",
+    "offline_factor_results": {
+      "alignment": {
+        "score": 2,
+        "justification": "Edited image replaces the photographed boy with a faceless mannequin; arms are out but the original boy, clothing, and hair are removed."
+      },
+      "completeness": {
+        "score": 3,
+        "justification": "Ground Truth shows a dressed boy with extended hands; Edited shows arm extension but omits clothing, hair, and realistic limb detail."
+      },
+      "plausibility": {
+        "score": 3,
+        "justification": "Ground Truth shows a realistic person; Edited's smooth, featureless figure appears artificial and less believable within the desert scene."
+      }
+    }
+  }
+]

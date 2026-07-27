@@ -1,0 +1,55 @@
+{
+  "image_id": "HumanEdit_Action_0_BEwrVP6o0yQ_good_case",
+  "description": "Perfect match test - ground truth used as both input and edited image",
+  "instruction": "Have the boy stretch out his hands.",
+  "offline_factor_results": {
+    "unchanged_regions": {
+      "score": 7,
+      "justification": "Background terrain, distant buttes, and foreground shrubs remain identical with no visible alterations outside the boy."
+    },
+    "global_consistency": {
+      "score": 7,
+      "justification": "Overall color palette, perspective, and scene composition match perfectly between the two images."
+    },
+    "identity_preservation": {
+      "score": 7,
+      "justification": "The boy's haircut, clothing, and body shape are retained exactly in the edited image."
+    },
+    "scale_realism": {
+      "score": 7,
+      "justification": "Boy's proportions relative to the landscape and nearby shrubs remain realistic and consistent."
+    },
+    "spatial_relationship": {
+      "score": 7,
+      "justification": "Relative positions of the boy, ground, and horizon are unchanged and spatial relationships are preserved."
+    },
+    "texture_and_detail": {
+      "score": 7,
+      "justification": "Clothing folds, skin texture, and ground details match seamlessly with consistent fine detail."
+    },
+    "image_quality": {
+      "score": 7,
+      "justification": "No added noise, blurring, or distortions are visible; image remains sharp and clean."
+    },
+    "color_and_lighting": {
+      "score": 7,
+      "justification": "Lighting direction, shadows, and desert color tones are consistent across the edited region and background."
+    },
+    "seamlessness": {
+      "score": 7,
+      "justification": "Transitions between the boy's arms and surrounding areas show no visible seams or hard edges."
+    },
+    "alignment": {
+      "score": 7,
+      "justification": "The boy's hands are clearly stretched outward, matching the instruction and the ground truth image."
+    },
+    "completeness": {
+      "score": 7,
+      "justification": "Both arms are fully extended in the edited image, completing the requested modification entirely."
+    },
+    "plausibility": {
+      "score": 7,
+      "justification": "The pose appears natural and physically plausible within the scene and body mechanics."
+    }
+  }
+}
